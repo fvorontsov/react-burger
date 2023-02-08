@@ -1,0 +1,30 @@
+.list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 32px 24px;
+}
+
+.main_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 272px;
+  height: 200px;
+}
+
+.description_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.price_container {
+  display: flex;
+  gap: 9px;
+}
+
+.name {
+  text-align: center;
+}
