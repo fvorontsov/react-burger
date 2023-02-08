@@ -18,12 +18,9 @@ export const BurgerIngredients = () => {
             <Tab active={false} value={"three"} onClick={doNothing}>Начинки</Tab>
         </div>
         <div className={`${styles.container} custom-scroll mt-10`}>
-            <p className="text text_type_main-medium">Булки</p>
-            <IngredientsList ingredients={bun}/>
-            <p className="text text_type_main-medium">Соусы</p>
-            <IngredientsList ingredients={sauce}/>
-            <p className="text text_type_main-medium">Начинки</p>
-            <IngredientsList ingredients={main}/>
+            <IngredientsList title="Булки" ingredients={bun}/>
+            <IngredientsList title="Соусы" ingredients={sauce}/>
+            <IngredientsList title="Начинки" ingredients={main}/>
         </div>
     </section>
 }

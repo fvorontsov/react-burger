@@ -8,32 +8,32 @@ export const AppHeader = () => {
                 <li className={styles.main_list_item}>
                     <ul className={styles.sub_list}>
                         <li className={`${styles.link_container} mr-2`}>
-                            <div className={`${styles.link} mr-5`}>
+                            <a href="#" className={`${styles.link} mr-5`}>
                                 <BurgerIcon type="primary"/>
                                 <p className="text text_type_main-default ml-2">Конструктор</p>
-                            </div>
+                            </a>
                         </li>
 
                         <li className={styles.link_container}>
-                            <div className={`${styles.link} ml-5 mr-5`}>
+                            <a href="#" className={`${styles.link} ml-5 mr-5`}>
                                 <ListIcon type="primary"/>
                                 <p className="text text_type_main-default ml-2">Лента заказов</p>
-                            </div>
+                            </a>
                         </li>
                     </ul>
                 </li>
 
                 <li className={styles.main_list_item}>
-                    <div className={styles.link}>
+                    <a href="#" className={styles.link}>
                         <Logo/>
-                    </div>
+                    </a>
                 </li>
 
                 <li className={styles.main_list_item}>
-                    <div className={`${styles.link} ml-5`}>
+                    <a href="#" className={`${styles.link} ml-5`}>
                         <ProfileIcon type="primary"/>
                         <p className="text text_type_main-default ml-2">Личный кабинет</p>
-                    </div>
+                    </a>
                 </li>
             </ul>
         </nav>
