@@ -14,5 +14,5 @@ export const MainContainer = ({ ingredients }) => {
 };
 
 MainContainer.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };

@@ -4,10 +4,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ingredientPropTypes } from "../../../utils/propTypes";
 
-export const IngredientsList = ({ title, ingredients, onElementClick }) => {
+export const IngredientsList = React.forwardRef(({ title, ingredients, onElementClick }, ref) => {
   return (
     <>
-      <h1 className="text text_type_main-medium">{title}</h1>
+      <h2 ref={ref} className="text text_type_main-medium">{title}</h2>
       <ul className={`${styles.list} mt-6 mb-10 ml-4 mr-4`}>
         {ingredients.map((ingredient) => {
           const { _id, image, price, name } = ingredient;
@@ -31,10 +31,10 @@ export const IngredientsList = ({ title, ingredients, onElementClick }) => {
       </ul>
     </>
   );
-};
+});
 
 IngredientsList.propTypes = {
   title: PropTypes.string.isRequired,
-  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
   onElementClick: PropTypes.func.isRequired,
 };

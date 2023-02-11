@@ -5,7 +5,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorList } from "./constructor-list/ConstructorList";
-import { selectedBun } from "../../utils/data";
+import { INGREDIENT_TYPES } from "../../utils/data";
 import React from "react";
 import { Modal } from "../modal/Modal";
 import { OrderDetails } from "./order-details/OrderDetails";
@@ -23,10 +23,18 @@ export const BurgerConstructor = ({ ingredients }) => {
     setIsOpen(true);
   };
 
+  const selectedBun = React.useMemo(() => {
+    const buns = ingredients.filter((i) => i.type === INGREDIENT_TYPES.BUN);
+    if (buns.length === 0) {
+      return {};
+    }
+    return buns[Math.floor(Math.random() * buns.length)];
+  }, [ingredients]);
+
   return (
     <section className={`${styles.constructor} mt-25`}>
-      <ul className={styles.list}>
-        <li className="ml-8">
+      <div className={styles.list}>
+        <div className="ml-8">
           <ConstructorElement
             type="top"
             isLocked={false}
@@ -34,9 +42,9 @@ export const BurgerConstructor = ({ ingredients }) => {
             thumbnail={selectedBun.image}
             price={selectedBun.price}
           />
-        </li>
+        </div>
         <ConstructorList ingredients={ingredients} />
-        <li className="ml-8">
+        <div className="ml-8">
           <ConstructorElement
             type="bottom"
             isLocked={false}
@@ -44,8 +52,8 @@ export const BurgerConstructor = ({ ingredients }) => {
             thumbnail={selectedBun.image}
             price={selectedBun.price}
           />
-        </li>
-      </ul>
+        </div>
+      </div>
       <div className={`${styles.container} mt-10 mr-4`}>
         <span className="text text_type_digits-medium mr-10">
           500
@@ -68,5 +76,5 @@ export const BurgerConstructor = ({ ingredients }) => {
 };
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };

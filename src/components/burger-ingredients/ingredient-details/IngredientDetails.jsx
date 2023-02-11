@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 
 const ListItem = ({ text }) => {
   return (
-    <li className={styles.item}>
-      <p className="text text_type_main-default text_color_inactive">{text}</p>
+    <li
+      className={`${styles.item} text text_type_main-default text_color_inactive`}
+    >
+      {text}
     </li>
   );
 };
@@ -17,10 +19,10 @@ ListItem.propTypes = {
 export const IngredientDetails = ({ ingredient }) => {
   const { name, calories, carbohydrates, fat, proteins, image } = ingredient;
   return (
-    <div className={styles.container}>
+    <figure className={styles.container}>
       <img className={styles.image} src={image} alt={name} />
-      <h1 className={styles.header}>
-        <p className="text text_type_main-medium mt-4 mb-8">{name}</p>
+      <figcaption className={styles.header}>
+        <h1 className="text text_type_main-medium mt-4 mb-8">{name}</h1>
         <ul className={styles.list}>
           <ListItem text="Калории,ккал" />
           <ListItem text="Белки, г" />
@@ -31,8 +33,8 @@ export const IngredientDetails = ({ ingredient }) => {
           <ListItem text={fat} />
           <ListItem text={carbohydrates} />
         </ul>
-      </h1>
-    </div>
+      </figcaption>
+    </figure>
   );
 };
 

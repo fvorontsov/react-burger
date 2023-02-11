@@ -12,10 +12,10 @@ export const ConstructorList = ({ ingredients }) => {
       {ingredients.map((ingredient) => {
         const { _id, name, price, image } = ingredient;
         return (
-          <li className={styles.item} key={_id}>
+          <div className={styles.item} key={_id}>
             <DragIcon type={"primary"} />
             <ConstructorElement text={name} thumbnail={image} price={price} />
-          </li>
+          </div>
         );
       })}
     </div>
@@ -23,5 +23,5 @@ export const ConstructorList = ({ ingredients }) => {
 };
 
 ConstructorList.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };
