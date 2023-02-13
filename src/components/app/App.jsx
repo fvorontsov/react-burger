@@ -1,15 +1,27 @@
-import React from 'react';
-import '../../App.css';
-import {AppHeader} from "../app-header/AppHeader";
-import {MainContainer} from "../main-container/MainContainer";
+import React from "react";
+import "../../App.css";
+import { AppHeader } from "../app-header/AppHeader";
+import { MainContainer } from "../main-container/MainContainer";
+import { normaApiClient } from "../../service/NormaApiClient";
 
-function App() {
-    return (
-        <div>
-            <AppHeader/>
-            <MainContainer/>
-        </div>
-    );
-}
+export const App = () => {
+  const [ingredients, setIngredients] = React.useState([]);
 
-export default App;
+  React.useEffect(() => {
+    normaApiClient
+      .fetchIngredients()
+      .then((res) => {
+        setIngredients(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  return (
+    <div>
+      <AppHeader />
+      <MainContainer ingredients={ingredients} />
+    </div>
+  );
+};
