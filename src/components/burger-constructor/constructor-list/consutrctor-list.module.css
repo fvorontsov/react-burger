@@ -9,10 +9,3 @@
   max-height: calc(80px * 5 + 4 * 16px);
   overflow-y: scroll;
 }
-
-.item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-width: 568px;
-}

@@ -1,6 +1,6 @@
-import { ingredientPropTypes } from "../../../utils/propTypes";
 import styles from "./ingredient-details.module.css";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const ListItem = ({ text }) => {
   return (
@@ -16,8 +16,13 @@ ListItem.propTypes = {
   text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export const IngredientDetails = ({ ingredient }) => {
-  const { name, calories, carbohydrates, fat, proteins, image } = ingredient;
+export const IngredientDetails = () => {
+  const { selectedIngredient } = useSelector(
+    (state) => state.ingredientDetails
+  );
+
+  const { name, calories, carbohydrates, fat, proteins, image } =
+    selectedIngredient;
   return (
     <figure className={styles.container}>
       <img className={styles.image} src={image} alt={name} />
@@ -36,8 +41,4 @@ export const IngredientDetails = ({ ingredient }) => {
       </figcaption>
     </figure>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
 };

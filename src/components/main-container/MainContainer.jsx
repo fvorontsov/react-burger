@@ -1,18 +1,16 @@
 import { BurgerIngredients } from "../burger-ingredients/BurgerIngredients";
 import { BurgerConstructor } from "../burger-constructor/BurgerConstructor";
 import styles from "./main-container.module.css";
-import PropTypes from "prop-types";
-import { ingredientPropTypes } from "../../utils/propTypes";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
-export const MainContainer = ({ ingredients }) => {
+export const MainContainer = () => {
   return (
     <main className={styles.container}>
-      <BurgerIngredients ingredients={ingredients} />
-      <BurgerConstructor ingredients={ingredients} />
+      <DndProvider backend={HTML5Backend}>
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </DndProvider>
     </main>
   );
-};
-
-MainContainer.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };

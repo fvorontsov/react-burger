@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const modalRoot = document.getElementById("modal-root");
-export const Modal = ({ children, title, isOpen, closeModal }) => {
+export const Modal = ({ children, title, closeModal }) => {
   const handleKeydown = React.useCallback(
     (keydownEvent) => {
       if (keydownEvent.key === "Escape") {
@@ -22,7 +22,7 @@ export const Modal = ({ children, title, isOpen, closeModal }) => {
   }, [closeModal, handleKeydown]);
 
   return ReactDOM.createPortal(
-    <div className={`${styles.modal} ${isOpen && styles.opened}`}>
+    <div className={`${styles.modal}`}>
       <div className={styles.header}>
         {title && (
           <div className={`${styles.title} pt-10 ml-10 mr-10`}>
@@ -48,6 +48,5 @@ export const Modal = ({ children, title, isOpen, closeModal }) => {
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string,
-  isOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
 };
