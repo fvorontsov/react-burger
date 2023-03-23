@@ -36,7 +36,7 @@ export const BurgerConstructor = () => {
           return acc + cur.price;
         }
         return acc;
-      }, 0) + (bun._id ? 2 * bun.price : 0)
+      }, 0) + (bun ? 2 * bun.price : 0)
     );
   }, [ingredients, bun]);
 
@@ -69,7 +69,7 @@ export const BurgerConstructor = () => {
         });
         dispatch({
           type: ADD_INGREDIENT,
-          ingredient: { ...ingredient, uuid: uuid() },
+          ingredient
         });
         break;
       }
@@ -89,7 +89,7 @@ export const BurgerConstructor = () => {
     <section className={`${styles.constructor} mt-25`} ref={dropTargetRef}>
       <div className={styles.list}>
         <div className="ml-8">
-          {bun._id && (
+          {bun && (
             <ConstructorElement
               type="top"
               isLocked={true}
@@ -98,11 +98,11 @@ export const BurgerConstructor = () => {
               price={bun.price}
             />
           )}
-          {!bun._id && <EmptyConstructorCard type={BunType.TOP} />}
+          {!bun && <EmptyConstructorCard type={BunType.TOP} />}
         </div>
         <ConstructorList ingredients={ingredients} />
         <div className="ml-8">
-          {bun._id && (
+          {bun && (
             <ConstructorElement
               type="bottom"
               isLocked={true}
@@ -111,7 +111,7 @@ export const BurgerConstructor = () => {
               price={bun.price}
             />
           )}
-          {!bun._id && <EmptyConstructorCard type={BunType.BOTTOM} />}
+          {!bun && <EmptyConstructorCard type={BunType.BOTTOM} />}
         </div>
       </div>
       <div className={`${styles.container} mt-10 mr-4`}>
@@ -123,7 +123,7 @@ export const BurgerConstructor = () => {
           htmlType="button"
           type="primary"
           size="large"
-          disabled={!bun._id}
+          disabled={!bun}
           onClick={handlePlaceOrder}
         >
           Оформить заказ

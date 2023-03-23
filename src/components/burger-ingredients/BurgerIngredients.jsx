@@ -7,14 +7,13 @@ import {
   OPEN_INGREDIENT_DETAILS_MODAL,
   selectIngredient,
 } from "../../services/actions/ingredient-details";
-import { CHANGE_CURRENT_TAB } from "../../services/actions/burger-ingredients";
 import { IngredientType } from "../../utils/constants";
 
 export const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const { ingredients, currentTab } = useSelector(
-    (state) => state.burgerIngredients
-  );
+  const { ingredients } = useSelector((state) => state.burgerIngredients);
+
+  const [currentTab, setCurrentTab] = React.useState(IngredientType.BUN);
 
   const bun = React.useMemo(
     () => ingredients.filter((i) => i.type === IngredientType.BUN),
@@ -41,10 +40,7 @@ export const BurgerIngredients = () => {
   }
 
   function handleTabClick(tab) {
-    dispatch({
-      type: CHANGE_CURRENT_TAB,
-      tab,
-    });
+    setCurrentTab(tab);
     switch (tab) {
       case IngredientType.BUN:
         scrollTo(bunRef);
@@ -63,28 +59,15 @@ export const BurgerIngredients = () => {
   function handleScroll(event) {
     const scrollTop = event.target.scrollTop;
 
-    const sauceTop =
-      sauceRef.current.getBoundingClientRect().top -
-      bunRef.current.getBoundingClientRect().top;
-    const bunTop =
-      mainRef.current.getBoundingClientRect().top -
-      bunRef.current.getBoundingClientRect().top;
+    const sauceScrollTop = sauceRef.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top;
+    const mainScrollTop = mainRef.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top;
 
-    if (scrollTop < sauceTop) {
-      dispatch({
-        type: CHANGE_CURRENT_TAB,
-        tab: IngredientType.BUN,
-      });
-    } else if (scrollTop >= bunTop) {
-      dispatch({
-        type: CHANGE_CURRENT_TAB,
-        tab: IngredientType.MAIN,
-      });
+    if (scrollTop >= mainScrollTop) {
+      setCurrentTab(IngredientType.MAIN);
+    } else if (scrollTop < sauceScrollTop) {
+      setCurrentTab(IngredientType.BUN);
     } else {
-      dispatch({
-        type: CHANGE_CURRENT_TAB,
-        tab: IngredientType.SAUCE,
-      });
+      setCurrentTab(IngredientType.SAUCE);
     }
   }
 

@@ -1,5 +1,4 @@
 import {
-  CHANGE_CURRENT_TAB,
   DECREASE_INGREDIENT_QUANTITY,
   FETCH_INGREDIENTS_REQUEST_FAILED,
   FETCH_INGREDIENTS_REQUEST_STARTED,
@@ -13,7 +12,6 @@ const initialState = {
   ingredients: [],
   fetchIngredientsInProgress: false,
   fetchIngredientsFailed: false,
-  currentTab: IngredientType.BUN,
 };
 
 export const burgerIngredientsReducer = (state = initialState, action) => {
@@ -79,12 +77,6 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
               }
             : ingredient;
         }),
-      };
-    }
-    case CHANGE_CURRENT_TAB: {
-      return {
-        ...state,
-        currentTab: action.tab,
       };
     }
     default: {

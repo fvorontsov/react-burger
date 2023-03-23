@@ -6,7 +6,7 @@ import {
 } from "../actions/ingredient-details";
 
 const initialState = {
-  selectedIngredient: {},
+  selectedIngredient: null,
   modalIsOpen: false,
 };
 
