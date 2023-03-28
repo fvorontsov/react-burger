@@ -1,0 +1,16 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 568px;
+  cursor: grab;
+  opacity: 1;
+}
+
+.item:active {
+  cursor: grabbing;
+}
+
+.item_drag {
+  opacity: 0;
+}

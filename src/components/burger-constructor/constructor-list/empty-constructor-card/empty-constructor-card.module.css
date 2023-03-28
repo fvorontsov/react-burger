@@ -1,0 +1,18 @@
+.card {
+  padding: 16px 24px;
+  display: inline-flex;
+  border-radius: var(--common-border-radius-s);
+  background: var(--background-element);
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  width: 488px;
+}
+
+.card_top {
+  border-radius: var(--top-constructor-item-border-radius);
+}
+
+.card_bottom {
+  border-radius: var(--bottom-constructor-item-border-radius);
+}

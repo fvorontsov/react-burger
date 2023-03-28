@@ -5,76 +5,130 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorList } from "./constructor-list/ConstructorList";
-import { INGREDIENT_TYPES } from "../../utils/data";
 import React from "react";
-import { Modal } from "../modal/Modal";
-import { OrderDetails } from "./order-details/OrderDetails";
-import PropTypes from "prop-types";
-import { ingredientPropTypes } from "../../utils/propTypes";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_INGREDIENT,
+  SELECT_BUN,
+} from "../../services/actions/burger-constructor";
+import {
+  INCREASE_INGREDIENT_QUANTITY,
+  SELECT_BUNS,
+} from "../../services/actions/burger-ingredients";
+import { placeOrder } from "../../services/actions/order-details";
+import { useDrop } from "react-dnd";
+import { BunType, IngredientType, ItemTypes } from "../../utils/constants";
+import { v4 as uuid } from "uuid";
+import { EmptyConstructorCard } from "./constructor-list/empty-constructor-card/EmptyConstructorCard";
 
-export const BurgerConstructor = ({ ingredients }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+export const BurgerConstructor = () => {
+  const dispatch = useDispatch();
 
-  const handleCloseModal = () => {
-    setIsOpen(false);
-  };
+  const ingredients = useSelector(
+    (state) => state.burgerConstructor.ingredients
+  );
+  const { bun } = useSelector((state) => state.burgerConstructor);
 
-  const handlePlaceOrder = () => {
-    setIsOpen(true);
-  };
+  const totalCost = React.useMemo(() => {
+    return (
+      ingredients.reduce((acc, cur) => {
+        if (cur.price) {
+          return acc + cur.price;
+        }
+        return acc;
+      }, 0) + (bun ? 2 * bun.price : 0)
+    );
+  }, [ingredients, bun]);
 
-  const selectedBun = React.useMemo(() => {
-    const buns = ingredients.filter((i) => i.type === INGREDIENT_TYPES.BUN);
-    if (buns.length === 0) {
-      return {};
+  const [, dropTargetRef] = useDrop({
+    accept: ItemTypes.INGREDIENT_CARD,
+    drop(ingredient) {
+      handleDrop(ingredient);
+    },
+  });
+
+  function handleDrop(ingredient) {
+    const { _id, type } = ingredient;
+
+    switch (type) {
+      case IngredientType.BUN: {
+        dispatch({
+          type: SELECT_BUNS,
+          _id: _id,
+        });
+        dispatch({
+          type: SELECT_BUN,
+          bun: ingredient,
+        });
+        break;
+      }
+      default: {
+        dispatch({
+          type: INCREASE_INGREDIENT_QUANTITY,
+          _id: _id,
+        });
+        dispatch({
+          type: ADD_INGREDIENT,
+          ingredient
+        });
+        break;
+      }
     }
-    return buns[Math.floor(Math.random() * buns.length)];
-  }, [ingredients]);
+  }
+
+  function handlePlaceOrder() {
+    const orderIngredientIds = [
+      bun._id,
+      ...ingredients.map((ingredient) => ingredient._id),
+      bun._id,
+    ];
+    dispatch(placeOrder(orderIngredientIds));
+  }
 
   return (
-    <section className={`${styles.constructor} mt-25`}>
+    <section className={`${styles.constructor} mt-25`} ref={dropTargetRef}>
       <div className={styles.list}>
         <div className="ml-8">
-          <ConstructorElement
-            type="top"
-            isLocked={false}
-            text={`${selectedBun.name} (верх)`}
-            thumbnail={selectedBun.image}
-            price={selectedBun.price}
-          />
+          {bun && (
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${bun.name} (верх)`}
+              thumbnail={bun.image}
+              price={bun.price}
+            />
+          )}
+          {!bun && <EmptyConstructorCard type={BunType.TOP} />}
         </div>
         <ConstructorList ingredients={ingredients} />
         <div className="ml-8">
-          <ConstructorElement
-            type="bottom"
-            isLocked={false}
-            text={`${selectedBun.name} (низ)`}
-            thumbnail={selectedBun.image}
-            price={selectedBun.price}
-          />
+          {bun && (
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${bun.name} (низ)`}
+              thumbnail={bun.image}
+              price={bun.price}
+            />
+          )}
+          {!bun && <EmptyConstructorCard type={BunType.BOTTOM} />}
         </div>
       </div>
       <div className={`${styles.container} mt-10 mr-4`}>
         <span className="text text_type_digits-medium mr-10">
-          500
+          {totalCost}
           <CurrencyIcon type="primary" />
         </span>
         <Button
           htmlType="button"
           type="primary"
           size="large"
+          disabled={!bun}
           onClick={handlePlaceOrder}
         >
           Оформить заказ
         </Button>
       </div>
-      <Modal isOpen={isOpen} closeModal={handleCloseModal}>
-        <OrderDetails />
-      </Modal>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };

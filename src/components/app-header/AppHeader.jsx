@@ -23,7 +23,7 @@ export const AppHeader = () => {
               </li>
 
               <li className={styles.link_container}>
-                <a href="#" className={`${styles.link} ml-5 mr-5`}>
+                <a href="#" className={`${styles.link}  ${styles.link_disabled} ml-5 mr-5`}>
                   <ListIcon type="primary" />
                   <p className="text text_type_main-default ml-2">
                     Лента заказов
@@ -40,7 +40,7 @@ export const AppHeader = () => {
           </li>
 
           <li className={styles.main_list_item}>
-            <a href="#" className={`${styles.link} ml-5`}>
+            <a href="#" className={`${styles.link} ${styles.link_disabled} ml-5`}>
               <ProfileIcon type="primary" />
               <p className="text text_type_main-default ml-2">Личный кабинет</p>
             </a>

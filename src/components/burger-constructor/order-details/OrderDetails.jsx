@@ -1,10 +1,13 @@
 import styles from "./order-details.module.css";
 import image from "../../../images/done.svg";
+import { useSelector } from "react-redux";
 
 export const OrderDetails = () => {
+  const { orderId } = useSelector((state) => state.orderDetails);
+
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
-      <p className="text text_type_digits-large">42</p>
+      <p className="text text_type_digits-large">{orderId}</p>
       <p className="text text_type_main-medium mt-8 mb-15">
         Идентификатор заказа
       </p>
