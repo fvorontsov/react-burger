@@ -17,9 +17,14 @@ import {
 } from "../../services/actions/burger-ingredients";
 import { placeOrder } from "../../services/actions/order-details";
 import { useDrop } from "react-dnd";
-import { BunType, IngredientType, ItemTypes } from "../../utils/constants";
-import { v4 as uuid } from "uuid";
+import {
+  BunType,
+  IngredientType,
+  ItemTypes,
+  Paths,
+} from "../../utils/constants";
 import { EmptyConstructorCard } from "./constructor-list/empty-constructor-card/EmptyConstructorCard";
+import { useNavigate } from "react-router-dom";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -27,6 +32,14 @@ export const BurgerConstructor = () => {
   const ingredients = useSelector(
     (state) => state.burgerConstructor.ingredients
   );
+
+  const makeOrderRequestInProgress = useSelector(
+      (state) => state.orderDetails.makeOrderRequestInProgress
+  )
+
+  const { isAuthenticated } = useSelector((state) => state.access);
+
+  const navigate = useNavigate();
   const { bun } = useSelector((state) => state.burgerConstructor);
 
   const totalCost = React.useMemo(() => {
@@ -69,7 +82,7 @@ export const BurgerConstructor = () => {
         });
         dispatch({
           type: ADD_INGREDIENT,
-          ingredient
+          ingredient,
         });
         break;
       }
@@ -77,12 +90,18 @@ export const BurgerConstructor = () => {
   }
 
   function handlePlaceOrder() {
-    const orderIngredientIds = [
-      bun._id,
-      ...ingredients.map((ingredient) => ingredient._id),
-      bun._id,
-    ];
-    dispatch(placeOrder(orderIngredientIds));
+    if (isAuthenticated) {
+      const orderIngredientIds = [
+        bun._id,
+        ...ingredients.map((ingredient) => ingredient._id),
+        bun._id,
+      ];
+      dispatch(placeOrder(orderIngredientIds));
+    } else {
+      navigate(Paths.LOGIN, {
+        replace: true,
+      });
+    }
   }
 
   return (
@@ -123,7 +142,7 @@ export const BurgerConstructor = () => {
           htmlType="button"
           type="primary"
           size="large"
-          disabled={!bun}
+          disabled={!bun || makeOrderRequestInProgress}
           onClick={handlePlaceOrder}
         >
           Оформить заказ

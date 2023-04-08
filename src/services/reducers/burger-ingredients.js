@@ -1,4 +1,5 @@
 import {
+  CLEAR_QUANTITY,
   DECREASE_INGREDIENT_QUANTITY,
   FETCH_INGREDIENTS_REQUEST_FAILED,
   FETCH_INGREDIENTS_REQUEST_STARTED,
@@ -78,6 +79,12 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
             : ingredient;
         }),
       };
+    }
+    case CLEAR_QUANTITY: {
+      return {
+        ...state,
+        ingredients: [...state.ingredients].map(ingredient => ({ ...ingredient, quantity: 0 })),
+      }
     }
     default: {
       return state;
