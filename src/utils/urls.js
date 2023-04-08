@@ -8,7 +8,7 @@ export const urls = {
     login: "auth/login",
     register: "auth/register",
     logout: "auth/logout",
-    token: "/auth/token",
+    token: "auth/token",
     user: "auth/user",
   },
   passWordReset: {

@@ -7,11 +7,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate } from "react-router-dom";
+import {Link, Navigate, useLocation} from "react-router-dom";
 import { login } from "../../services/actions/login";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const { isAuthenticated, loginRequestFailed } = useSelector(
     (state) => state.access
@@ -34,7 +35,7 @@ export const LoginPage = () => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to={Paths.HOME} replace />;
+    return <Navigate to={location?.state?.from || Paths.HOME}  replace />;
   }
 
   return (

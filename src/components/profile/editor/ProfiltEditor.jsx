@@ -111,7 +111,7 @@ export const ProfileEditor = () => {
           <Button type="secondary" size="large" onClick={onCancel} htmlType={"reset"}>
             Отмена
           </Button>
-          <Button type="primary" size="large" htmlType={"button"}>
+          <Button type="primary" size="large" htmlType={"submit"}>
             Сохранить
           </Button>
         </div>

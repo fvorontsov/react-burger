@@ -47,6 +47,9 @@ export function editProfile(form) {
 
 export function getUser() {
   return function (dispatch) {
+    if (!localStorage.hasOwnProperty(TokenIdentifiers.ACCESS)) {
+      return;
+    }
     dispatch({
       type: GET_USER_REQUEST_STARTED,
     });
@@ -82,7 +85,7 @@ export function refreshToken() {
         dispatch({
           type: REFRESH_TOKEN_REQUEST_SUCCEED,
         });
-        localStorage.removeItem(TokenIdentifiers.ACCESS)
+        localStorage.removeItem(TokenIdentifiers.ACCESS);
         localStorage.removeItem(TokenIdentifiers.REFRESH);
 
         localStorage.setItem(TokenIdentifiers.ACCESS, data.accessToken);

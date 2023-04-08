@@ -14,8 +14,11 @@ export const ResetPasswordPage = () => {
 
   const { forgotPasswordRequestSucceed } = useSelector((state) => state.access);
 
-  const { isAuthenticated, resetPasswordRequestSucceed, resetPasswordRequestFailed } =
-    useSelector((state) => state.access);
+  const {
+    isAuthenticated,
+    resetPasswordRequestSucceed,
+    resetPasswordRequestFailed,
+  } = useSelector((state) => state.access);
 
   const [formValue, setFormValue] = React.useState({
     password: "",
@@ -74,7 +77,7 @@ export const ResetPasswordPage = () => {
           />
         </div>
 
-        <Button type="primary" size="large" htmlType={"button"}>
+        <Button type="primary" size="large" htmlType={"submit"}>
           Сохранить
         </Button>
       </form>
@@ -82,7 +85,6 @@ export const ResetPasswordPage = () => {
       <p className="text text_type_main-default text_color_inactive mt-20">
         Вспомнили пароль?
         <Link to={Paths.LOGIN} className={styles.link}>
-          {" "}
           Войти
         </Link>
       </p>

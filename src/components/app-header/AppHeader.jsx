@@ -40,14 +40,14 @@ export const AppHeader = () => {
                 <Link to={Paths.ORDERS} className={`${styles.link} ml-5`}>
                   <ListIcon
                     type={
-                      location.pathname === Paths.ORDERS
+                      location.pathname.startsWith(Paths.ORDERS)
                         ? "primary"
                         : "secondary"
                     }
                   />
                   <p
                     className={`text text_type_main-default ml-2 ${
-                      location.pathname === Paths.ORDERS
+                      location.pathname.startsWith(Paths.ORDERS)
                         ? styles.link_text_active
                         : styles.link_text
                     }`}
@@ -60,21 +60,23 @@ export const AppHeader = () => {
           </li>
 
           <li className={styles.main_list_item}>
-            <a href="#" className={styles.link}>
+            <Link to={Paths.HOME} className={styles.link}>
               <Logo />
-            </a>
+            </Link>
           </li>
 
           <li className={styles.main_list_item}>
             <Link to={Paths.PROFILE} className={`${styles.link} ml-5`}>
               <ProfileIcon
                 type={
-                  location.pathname === Paths.PROFILE ? "primary" : "secondary"
+                  location.pathname.startsWith(Paths.PROFILE)
+                    ? "primary"
+                    : "secondary"
                 }
               />
               <p
                 className={`text text_type_main-default ml-2 ${
-                  location.pathname === Paths.PROFILE
+                  location.pathname.startsWith(Paths.PROFILE)
                     ? styles.link_text_active
                     : styles.link_text
                 }`}

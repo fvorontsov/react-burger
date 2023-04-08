@@ -27,6 +27,7 @@ export const IngredientCard = ({ ingredient, onElementClick }) => {
       }}
       onClick={() => onElementClick(ingredient)}
       ref={dragRef}
+      className={styles.link}
     >
       <div className={styles.main_container}>
         <img className="ml-4 mr-4" src={image} alt={name} />
