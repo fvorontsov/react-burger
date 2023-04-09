@@ -19,7 +19,7 @@ export const LOGOUT_REQUEST_STARTED = "LOGOUT_REQUEST_STARTED";
 export const LOGOUT_REQUEST_SUCCEED = "LOGOUT_REQUEST_SUCCEED";
 export const LOGOUT_REQUEST_FAILED = "LOGOUT_REQUEST_FAILED";
 
-export function editProfile(form) {
+export function editProfile(form, firstAttempt) {
   return function (dispatch) {
     dispatch({
       type: EDIT_PROFILE_FORM_SUBMIT,
@@ -35,6 +35,9 @@ export function editProfile(form) {
       .catch((err) => {
         if (err.message === Errors.JWT_EXPIRED) {
           dispatch(refreshToken());
+          if (firstAttempt) {
+            dispatch(editProfile(form, false));
+          }
         } else {
           dispatch({
             type: EDIT_PROFILE_FORM_SUBMIT_FAILED,
@@ -45,7 +48,7 @@ export function editProfile(form) {
   };
 }
 
-export function getUser() {
+export function getUser(firstAttempt) {
   return function (dispatch) {
     if (!localStorage.hasOwnProperty(TokenIdentifiers.ACCESS)) {
       return;
@@ -64,6 +67,9 @@ export function getUser() {
       .catch((err) => {
         if (err.message === Errors.JWT_EXPIRED) {
           dispatch(refreshToken());
+          if (firstAttempt) {
+            dispatch(getUser(false));
+          }
         } else {
           dispatch({
             type: GET_USER_REQUEST_FAILED,

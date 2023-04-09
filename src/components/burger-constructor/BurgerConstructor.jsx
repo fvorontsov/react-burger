@@ -96,7 +96,7 @@ export const BurgerConstructor = () => {
         ...ingredients.map((ingredient) => ingredient._id),
         bun._id,
       ];
-      dispatch(placeOrder(orderIngredientIds));
+      dispatch(placeOrder(orderIngredientIds, true));
     } else {
       navigate(Paths.LOGIN, {
         replace: true,

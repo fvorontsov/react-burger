@@ -42,7 +42,7 @@ export const TokenIdentifiers = {
 };
 
 export const Errors = {
-  JWT_EXPIRED: "jwt expired",
+  JWT_EXPIRED: "invalid token",
 };
 
 export const Paths = {

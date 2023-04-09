@@ -42,7 +42,7 @@ export const ProfileEditor = () => {
 
   function onSubmit(evt) {
     evt.preventDefault();
-    dispatch(editProfile(formValue));
+    dispatch(editProfile(formValue, true));
   }
 
   function onCancel(evt) {

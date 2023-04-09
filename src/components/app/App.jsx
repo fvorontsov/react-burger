@@ -58,7 +58,7 @@ export const App = () => {
 
   React.useEffect(() => {
     dispatch(getIngredients());
-    dispatch(getUser());
+    dispatch(getUser(true));
   }, [dispatch]);
 
   return (
