@@ -11,6 +11,7 @@ export const SELECT_BUNS = "SELECT_BUNS";
 
 export const INCREASE_INGREDIENT_QUANTITY = "INCREASE_INGREDIENT_QUANTITY";
 export const DECREASE_INGREDIENT_QUANTITY = "DECREASE_INGREDIENT";
+export const CLEAR_QUANTITY = 'CLEAR_QUANTITY';
 
 export function getIngredients() {
   return function (dispatch) {

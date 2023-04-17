@@ -6,9 +6,12 @@ import {
 import React from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../../../../utils/constants";
+import { Link, useLocation } from "react-router-dom";
 
 export const IngredientCard = ({ ingredient, onElementClick }) => {
   const { _id, image, price, name } = ingredient;
+
+  const location = useLocation();
 
   const [, dragRef] = useDrag({
     type: ItemTypes.INGREDIENT_CARD,
@@ -16,7 +19,16 @@ export const IngredientCard = ({ ingredient, onElementClick }) => {
   });
 
   return (
-    <li key={_id} onClick={() => onElementClick(ingredient)} ref={dragRef}>
+    <Link
+      key={_id}
+      to={`ingredients/${_id}`}
+      state={{
+        fromCard: true,
+      }}
+      onClick={() => onElementClick(ingredient)}
+      ref={dragRef}
+      className={styles.link}
+    >
       <div className={styles.main_container}>
         <img className="ml-4 mr-4" src={image} alt={name} />
         <div className={styles.description_container}>
@@ -30,6 +42,6 @@ export const IngredientCard = ({ ingredient, onElementClick }) => {
           <Counter count={ingredient.quantity} size="default" />
         )}
       </div>
-    </li>
+    </Link>
   );
 };

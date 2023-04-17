@@ -5,8 +5,12 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link, useLocation } from "react-router-dom";
+import { Paths } from "../../utils/constants";
 
 export const AppHeader = () => {
+  const location = useLocation();
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav_body}>
@@ -14,36 +18,72 @@ export const AppHeader = () => {
           <li className={styles.main_list_item}>
             <ul className={styles.sub_list}>
               <li className={`${styles.link_container} mr-2`}>
-                <a href="#" className={`${styles.link} mr-5`}>
-                  <BurgerIcon type="primary" />
-                  <p className="text text_type_main-default ml-2">
+                <Link to={Paths.HOME} className={`${styles.link} ml-5`}>
+                  <BurgerIcon
+                    type={
+                      location.pathname === Paths.HOME ? "primary" : "secondary"
+                    }
+                  />
+                  <p
+                    className={`text text_type_main-default ml-2 ${
+                      location.pathname === Paths.HOME
+                        ? styles.link_text_active
+                        : styles.link_text
+                    }`}
+                  >
                     Конструктор
                   </p>
-                </a>
+                </Link>
               </li>
 
               <li className={styles.link_container}>
-                <a href="#" className={`${styles.link}  ${styles.link_disabled} ml-5 mr-5`}>
-                  <ListIcon type="primary" />
-                  <p className="text text_type_main-default ml-2">
+                <Link to={Paths.ORDERS} className={`${styles.link} ml-5`}>
+                  <ListIcon
+                    type={
+                      location.pathname.startsWith(Paths.ORDERS)
+                        ? "primary"
+                        : "secondary"
+                    }
+                  />
+                  <p
+                    className={`text text_type_main-default ml-2 ${
+                      location.pathname.startsWith(Paths.ORDERS)
+                        ? styles.link_text_active
+                        : styles.link_text
+                    }`}
+                  >
                     Лента заказов
                   </p>
-                </a>
+                </Link>
               </li>
             </ul>
           </li>
 
           <li className={styles.main_list_item}>
-            <a href="#" className={styles.link}>
+            <Link to={Paths.HOME} className={styles.link}>
               <Logo />
-            </a>
+            </Link>
           </li>
 
           <li className={styles.main_list_item}>
-            <a href="#" className={`${styles.link} ${styles.link_disabled} ml-5`}>
-              <ProfileIcon type="primary" />
-              <p className="text text_type_main-default ml-2">Личный кабинет</p>
-            </a>
+            <Link to={Paths.PROFILE} className={`${styles.link} ml-5`}>
+              <ProfileIcon
+                type={
+                  location.pathname.startsWith(Paths.PROFILE)
+                    ? "primary"
+                    : "secondary"
+                }
+              />
+              <p
+                className={`text text_type_main-default ml-2 ${
+                  location.pathname.startsWith(Paths.PROFILE)
+                    ? styles.link_text_active
+                    : styles.link_text
+                }`}
+              >
+                Личный кабинет
+              </p>
+            </Link>
           </li>
         </ul>
       </nav>

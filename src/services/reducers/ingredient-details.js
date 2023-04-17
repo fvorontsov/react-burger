@@ -6,7 +6,15 @@ import {
 } from "../actions/ingredient-details";
 
 const initialState = {
-  selectedIngredient: null,
+  selectedIngredient: {
+    _id: "",
+    image: "",
+    name: "",
+    calories: 0,
+    proteins: 0,
+    fat: 0,
+    carbohydrates: 0,
+  },
   modalIsOpen: false,
 };
 
@@ -21,7 +29,7 @@ export const ingredientDetailsReducer = (state = initialState, action) => {
     case DESELECT_INGREDIENT: {
       return {
         ...state,
-        selectedIngredient: null,
+        selectedIngredient: initialState.selectedIngredient,
       };
     }
     case OPEN_INGREDIENT_DETAILS_MODAL: {

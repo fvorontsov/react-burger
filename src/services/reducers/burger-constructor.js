@@ -1,5 +1,5 @@
 import {
-  ADD_INGREDIENT,
+  ADD_INGREDIENT, CLEAR_INGREDIENTS,
   MOVE_INGREDIENT,
   REMOVE_INGREDIENT,
   SELECT_BUN,
@@ -46,6 +46,13 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         ...state,
         ingredients,
       };
+    }
+    case CLEAR_INGREDIENTS: {
+      return {
+        ...state,
+        ingredients: initialState.ingredients,
+        bun: initialState.bun,
+      }
     }
     default: {
       return state;
