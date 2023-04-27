@@ -16,7 +16,7 @@ export function placeOrder(orderIngredientIds, firstAttempt) {
     dispatch({
       type: PLACE_ORDER_REQUEST_STARTED,
     });
-    makeOrder({ ingredientIds: orderIngredientIds })
+    makeOrder({ ingredients: orderIngredientIds })
       .then((res) => {
         dispatch({
           type: PLACE_ORDER_REQUEST_SUCCEED,

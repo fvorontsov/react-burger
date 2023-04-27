@@ -1,4 +1,10 @@
-import React, { useMemo } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  FormEvent,
+  SyntheticEvent,
+  useMemo,
+} from "react";
 import {
   Button,
   Input,
@@ -7,13 +13,16 @@ import styles from "./profile-editor.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { editProfile } from "../../../services/actions/profile";
 import { Inputs } from "../../../utils/constants";
+import { TProfileEditorForm } from "../../../types";
 
-export const ProfileEditor = () => {
-  const dispatch = useDispatch();
+export const ProfileEditor: FC = () => {
+  const dispatch = useDispatch<any>();
 
-  const { name, email, password } = useSelector((state) => state.access.user);
+  const { name, email, password } = useSelector(
+    (state: any) => state.access.user
+  );
 
-  const [formValue, setFormValue] = React.useState({
+  const [formValue, setFormValue] = React.useState<TProfileEditorForm>({
     name: name,
     email: email,
     password: password,
@@ -33,20 +42,20 @@ export const ProfileEditor = () => {
     );
   }, [formValue, name, email, password]);
 
-  function onFormChange(evt) {
+  function onFormChange(event: ChangeEvent<HTMLInputElement>) {
     setFormValue({
       ...formValue,
-      [evt.target.name]: evt.target.value,
+      [event.target.name]: event.target.value,
     });
   }
 
-  function onSubmit(evt) {
-    evt.preventDefault();
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
     dispatch(editProfile(formValue, true));
   }
 
-  function onCancel(evt) {
-    evt.preventDefault();
+  function onCancel(event: SyntheticEvent) {
+    event.preventDefault();
     setFormValue({
       name,
       email,
@@ -54,17 +63,17 @@ export const ProfileEditor = () => {
     });
   }
 
-  function onFocus(evt) {
+  function onFocus(event: React.FocusEvent<HTMLInputElement>) {
     setFocus({
       ...focus,
-      [evt.target.name]: true,
+      [event.target.name]: true,
     });
   }
 
-  function onBlur(evt) {
+  function onBlur(event: React.FocusEvent<HTMLInputElement>) {
     setFocus({
       ...focus,
-      [evt.target.name]: false,
+      [event.target.name]: false,
     });
   }
 
@@ -108,7 +117,12 @@ export const ProfileEditor = () => {
       </div>
       {isChanged && (
         <div className={styles.buttons}>
-          <Button type="secondary" size="large" onClick={onCancel} htmlType={"reset"}>
+          <Button
+            type="secondary"
+            size="large"
+            onClick={onCancel}
+            htmlType={"reset"}
+          >
             Отмена
           </Button>
           <Button type="primary" size="large" htmlType={"submit"}>

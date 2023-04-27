@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
-import React from "react";
+import React, { FC } from "react";
 import styles from "./profile.module.css";
 import { NavLink, Outlet } from "react-router-dom";
 import { logout } from "../../services/actions/profile";
 import { Paths } from "../../utils/constants";
 
-export const ProfilePage = () => {
-  const dispatch = useDispatch();
+export const ProfilePage: FC = () => {
+  const dispatch = useDispatch<any>();
 
   function onLogout() {
     dispatch(logout());

@@ -1,9 +1,9 @@
 import styles from "./consutrctor-list.module.css";
-import PropTypes from "prop-types";
-import { ingredientPropTypes } from "../../../utils/propTypes";
 import { ConstructorCard } from "./constructor-card/ConstructorCard";
+import { FC } from "react";
+import { TConstructorList } from "../../../types";
 
-export const ConstructorList = ({ ingredients }) => {
+export const ConstructorList: FC<TConstructorList> = ({ ingredients }) => {
   return (
     <div className={`${styles.container} pr-2 custom-scroll`}>
       {ingredients.map((ingredient, index) => {
@@ -14,8 +14,4 @@ export const ConstructorList = ({ ingredients }) => {
       })}
     </div>
   );
-};
-
-ConstructorList.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes.isRequired).isRequired,
 };

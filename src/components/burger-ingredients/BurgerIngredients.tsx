@@ -1,45 +1,50 @@
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsList } from "./ingredients-list/IngredientsList";
-import React from "react";
+import React, { FC, SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   OPEN_INGREDIENT_DETAILS_MODAL,
   selectIngredient,
 } from "../../services/actions/ingredient-details";
 import { IngredientType } from "../../utils/constants";
+import { TCountedIngredient } from "../../types";
 
-export const BurgerIngredients = () => {
+export const BurgerIngredients: FC = () => {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((state) => state.burgerIngredients);
+  const { ingredients } = useSelector((state: any) => state.burgerIngredients);
 
-  const [currentTab, setCurrentTab] = React.useState(IngredientType.BUN);
+  const [currentTab, setCurrentTab] = React.useState<string>(
+    IngredientType.BUN
+  );
 
   const bun = React.useMemo(
-    () => ingredients.filter((i) => i.type === IngredientType.BUN),
+    () => ingredients.filter((i: TCountedIngredient) => i.type === IngredientType.BUN),
     [ingredients]
   );
   const sauce = React.useMemo(
-    () => ingredients.filter((i) => i.type === IngredientType.SAUCE),
+    () =>
+      ingredients.filter((i: TCountedIngredient) => i.type === IngredientType.SAUCE),
     [ingredients]
   );
   const main = React.useMemo(
-    () => ingredients.filter((i) => i.type === IngredientType.MAIN),
+    () =>
+      ingredients.filter((i: TCountedIngredient) => i.type === IngredientType.MAIN),
     [ingredients]
   );
 
-  const bunRef = React.useRef(null);
-  const sauceRef = React.useRef(null);
-  const mainRef = React.useRef(null);
+  const bunRef = React.useRef<HTMLDivElement>(null);
+  const sauceRef = React.useRef<HTMLDivElement>(null);
+  const mainRef = React.useRef<HTMLDivElement>(null);
 
-  function handleIngredientCardClick(ingredient) {
+  function handleIngredientCardClick(ingredient: TCountedIngredient) {
     dispatch(selectIngredient(ingredient));
     dispatch({
       type: OPEN_INGREDIENT_DETAILS_MODAL,
     });
   }
 
-  function handleTabClick(tab) {
+  function handleTabClick(tab: string) {
     setCurrentTab(tab);
     switch (tab) {
       case IngredientType.BUN:
@@ -56,22 +61,37 @@ export const BurgerIngredients = () => {
     }
   }
 
-  function handleScroll(event) {
-    const scrollTop = event.target.scrollTop;
+  function handleScroll(event: SyntheticEvent) {
+    const target = event.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
 
-    const sauceScrollTop = sauceRef.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top;
-    const mainScrollTop = mainRef.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top;
+    if (
+      sauceRef &&
+      sauceRef.current &&
+      bunRef &&
+      bunRef.current &&
+      mainRef &&
+      mainRef.current
+    ) {
+      const sauceScrollTop =
+        sauceRef.current.getBoundingClientRect().top -
+        bunRef.current.getBoundingClientRect().top;
+      const mainScrollTop =
+        mainRef.current.getBoundingClientRect().top -
+        bunRef.current.getBoundingClientRect().top;
 
-    if (scrollTop >= mainScrollTop) {
-      setCurrentTab(IngredientType.MAIN);
-    } else if (scrollTop < sauceScrollTop) {
-      setCurrentTab(IngredientType.BUN);
-    } else {
-      setCurrentTab(IngredientType.SAUCE);
+      if (scrollTop >= mainScrollTop) {
+        setCurrentTab(IngredientType.MAIN);
+      } else if (scrollTop < sauceScrollTop) {
+        setCurrentTab(IngredientType.BUN);
+      } else {
+        setCurrentTab(IngredientType.SAUCE);
+      }
     }
   }
 
-  const scrollTo = (ref) => {
+  //fixme@filipp
+  const scrollTo = (ref: any) => {
     ref.current.scrollIntoView({
       behavior: "smooth",
     });

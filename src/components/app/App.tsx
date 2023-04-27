@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import "../../App.css";
 import { AppHeader } from "../app-header/AppHeader";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,21 +19,18 @@ import { RegistrationPage } from "../../pages/registration/RegistrationPage";
 import { ForgotPasswordPage } from "../../pages/forgot-password/ForgotPasswordPage";
 import { ResetPasswordPage } from "../../pages/reset-password/ResetPasswordPage";
 import { ProfilePage } from "../../pages/profile/ProfilePage";
-import ProtectedRoute from "../protected-route/ProtectedRoute";
 import { ProfileEditor } from "../profile/editor/ProfiltEditor";
 import { ProfileOrders } from "../profile/orders/ProfileOrders";
 import { Paths } from "../../utils/constants";
 import { getUser } from "../../services/actions/profile";
 import { NotFoundPage } from "../../pages/not-found/NotFoundPage";
+import ProtectedRoute from "../protected-route/ProtectedRoute";
 
-export const App = () => {
-  const dispatch = useDispatch();
+export const App: FC = () => {
+  const dispatch = useDispatch<any>();
 
-  const ingredientDetailsModal = useSelector(
-    (state) => state.ingredientDetails.modalIsOpen
-  );
   const orderDetailsModal = useSelector(
-    (state) => state.orderDetails.modalIsOpen
+    (state: any) => state.orderDetails.modalIsOpen
   );
 
   const navigate = useNavigate();

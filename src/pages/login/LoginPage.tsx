@@ -5,37 +5,38 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { ChangeEvent, FC, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Link, Navigate, useLocation} from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { login } from "../../services/actions/login";
+import { TLoginForm } from "../../types";
 
-export const LoginPage = () => {
-  const dispatch = useDispatch();
+export const LoginPage: FC = () => {
+  const dispatch = useDispatch<any>();
   const location = useLocation();
 
   const { isAuthenticated, loginRequestFailed } = useSelector(
-    (state) => state.access
+    (state: any) => state.access
   );
-  const [formValue, setFormValue] = React.useState({
+  const [formValue, setFormValue] = React.useState<TLoginForm>({
     email: "",
     password: "",
   });
 
-  function onFormChange(evt) {
+  function onFormChange(event: ChangeEvent<HTMLInputElement>) {
     setFormValue({
       ...formValue,
-      [evt.target.name]: evt.target.value,
+      [event.target.name]: event.target.value,
     });
   }
 
-  function onSubmit(evt) {
-    evt.preventDefault();
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
     dispatch(login(formValue));
   }
 
   if (isAuthenticated) {
-    return <Navigate to={location?.state?.from || Paths.HOME}  replace />;
+    return <Navigate to={location?.state?.from || Paths.HOME} replace />;
   }
 
   return (

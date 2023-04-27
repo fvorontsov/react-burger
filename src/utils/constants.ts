@@ -1,20 +1,22 @@
-export const IngredientType = {
+import { TInput, TString } from "../types";
+
+export const IngredientType: TString = {
   BUN: "bun",
   SAUCE: "sauce",
   MAIN: "main",
 };
 
-export const BunType = {
+export const BunType: TString = {
   TOP: "top",
   BOTTOM: "bottom",
 };
 
-export const ItemTypes = {
+export const ItemTypes: TString = {
   INGREDIENT_CARD: "INGREDIENT_CARD",
   CONSTRUCTOR_CARD: "CONSTRUCTOR_CARD",
 };
 
-export const Inputs = {
+export const Inputs: TInput = {
   Types: {
     EMAIL: "email",
     TEXT: "text",
@@ -36,16 +38,16 @@ export const Inputs = {
   },
 };
 
-export const TokenIdentifiers = {
+export const TokenIdentifiers: TString = {
   REFRESH: "refreshToken",
   ACCESS: "accessToken",
 };
 
-export const Errors = {
+export const Errors: TString = {
   JWT_EXPIRED: "jwt expired",
 };
 
-export const Paths = {
+export const Paths: TString = {
   REGISTER: "/register",
   LOGIN: "/login",
   HOME: "/",

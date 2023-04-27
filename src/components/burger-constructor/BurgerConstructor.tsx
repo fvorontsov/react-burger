@@ -5,7 +5,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorList } from "./constructor-list/ConstructorList";
-import React from "react";
+import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENT,
@@ -25,26 +25,27 @@ import {
 } from "../../utils/constants";
 import { EmptyConstructorCard } from "./constructor-list/empty-constructor-card/EmptyConstructorCard";
 import { useNavigate } from "react-router-dom";
+import { TCountedIngredient } from "../../types";
 
-export const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+export const BurgerConstructor: FC = () => {
+  const dispatch = useDispatch<any>();
 
   const ingredients = useSelector(
-    (state) => state.burgerConstructor.ingredients
+    (state: any) => state.burgerConstructor.ingredients
   );
 
   const makeOrderRequestInProgress = useSelector(
-      (state) => state.orderDetails.makeOrderRequestInProgress
-  )
+    (state: any) => state.orderDetails.makeOrderRequestInProgress
+  );
 
-  const { isAuthenticated } = useSelector((state) => state.access);
+  const { isAuthenticated } = useSelector((state: any) => state.access);
 
   const navigate = useNavigate();
-  const { bun } = useSelector((state) => state.burgerConstructor);
+  const { bun } = useSelector((state: any) => state.burgerConstructor);
 
   const totalCost = React.useMemo(() => {
     return (
-      ingredients.reduce((acc, cur) => {
+      ingredients.reduce((acc: number, cur: TCountedIngredient) => {
         if (cur.price) {
           return acc + cur.price;
         }
@@ -55,12 +56,12 @@ export const BurgerConstructor = () => {
 
   const [, dropTargetRef] = useDrop({
     accept: ItemTypes.INGREDIENT_CARD,
-    drop(ingredient) {
+    drop(ingredient: TCountedIngredient) {
       handleDrop(ingredient);
     },
   });
 
-  function handleDrop(ingredient) {
+  function handleDrop(ingredient: TCountedIngredient) {
     const { _id, type } = ingredient;
 
     switch (type) {
@@ -93,7 +94,7 @@ export const BurgerConstructor = () => {
     if (isAuthenticated) {
       const orderIngredientIds = [
         bun._id,
-        ...ingredients.map((ingredient) => ingredient._id),
+        ...ingredients.map((ingredient: TCountedIngredient) => ingredient._id),
         bun._id,
       ];
       dispatch(placeOrder(orderIngredientIds, true));

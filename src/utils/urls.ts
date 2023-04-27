@@ -1,4 +1,6 @@
-export const urls = {
+import { TUrls } from "../types";
+
+export const urls: TUrls = {
   base: `https://norma.nomoreparties.space/api`,
   general: {
     ingredients: "ingredients",

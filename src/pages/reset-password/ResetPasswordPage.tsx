@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import React from "react";
+import React, { ChangeEvent, FC, FormEvent } from "react";
 import styles from "../login/login.module.css";
 import {
   Button,
@@ -8,33 +8,36 @@ import {
 import { Inputs, Paths } from "../../utils/constants";
 import { Link, Navigate } from "react-router-dom";
 import { resetPassword } from "../../services/actions/reset-password";
+import { TResetPasswordForm } from "../../types";
 
-export const ResetPasswordPage = () => {
-  const dispatch = useDispatch();
+export const ResetPasswordPage: FC = () => {
+  const dispatch = useDispatch<any>();
 
-  const { forgotPasswordRequestSucceed } = useSelector((state) => state.access);
+  const { forgotPasswordRequestSucceed } = useSelector(
+    (state: any) => state.access
+  );
 
   const {
     isAuthenticated,
     resetPasswordRequestSucceed,
     resetPasswordRequestFailed,
-  } = useSelector((state) => state.access);
+  } = useSelector((state: any) => state.access);
 
-  const [formValue, setFormValue] = React.useState({
+  const [formValue, setFormValue] = React.useState<TResetPasswordForm>({
     password: "",
     token: "",
   });
   const [showPassword, setShowPassword] = React.useState(true);
 
-  function onFormChange(evt) {
+  function onFormChange(event: ChangeEvent<HTMLInputElement>) {
     setFormValue({
       ...formValue,
-      [evt.target.name]: evt.target.value,
+      [event.target.name]: event.target.value,
     });
   }
 
-  function onSubmit(evt) {
-    evt.preventDefault();
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
     dispatch(resetPassword(formValue));
   }
 
