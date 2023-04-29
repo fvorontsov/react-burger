@@ -19,17 +19,24 @@ export const BurgerIngredients: FC = () => {
   );
 
   const bun = React.useMemo(
-    () => ingredients.filter((i: TCountedIngredient) => i.type === IngredientType.BUN),
+    () =>
+      ingredients.filter(
+        (i: TCountedIngredient) => i.type === IngredientType.BUN
+      ),
     [ingredients]
   );
   const sauce = React.useMemo(
     () =>
-      ingredients.filter((i: TCountedIngredient) => i.type === IngredientType.SAUCE),
+      ingredients.filter(
+        (i: TCountedIngredient) => i.type === IngredientType.SAUCE
+      ),
     [ingredients]
   );
   const main = React.useMemo(
     () =>
-      ingredients.filter((i: TCountedIngredient) => i.type === IngredientType.MAIN),
+      ingredients.filter(
+        (i: TCountedIngredient) => i.type === IngredientType.MAIN
+      ),
     [ingredients]
   );
 
@@ -90,11 +97,12 @@ export const BurgerIngredients: FC = () => {
     }
   }
 
-  //fixme@filipp
-  const scrollTo = (ref: any) => {
-    ref.current.scrollIntoView({
-      behavior: "smooth",
-    });
+  const scrollTo = (ref: React.RefObject<HTMLDivElement>) => {
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
   };
 
   return (

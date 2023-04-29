@@ -24,7 +24,7 @@ import { ProfileOrders } from "../profile/orders/ProfileOrders";
 import { Paths } from "../../utils/constants";
 import { getUser } from "../../services/actions/profile";
 import { NotFoundPage } from "../../pages/not-found/NotFoundPage";
-import ProtectedRoute from "../protected-route/ProtectedRoute";
+import { ProtectedRoute } from "../protected-route/ProtectedRoute";
 
 export const App: FC = () => {
   const dispatch = useDispatch<any>();

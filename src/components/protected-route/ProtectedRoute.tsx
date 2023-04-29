@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { FC } from "react";
+import { TProtectedRoute } from "../../types";
 
-export default function ProtectedRoute({ children, ...rest }) {
-  const { isAuthenticated } = useSelector((state) => state.access);
+export const ProtectedRoute: FC<TProtectedRoute> = ({ children }) => {
+  const { isAuthenticated } = useSelector((state: any) => state.access);
 
   const location = useLocation();
 
@@ -20,4 +22,4 @@ export default function ProtectedRoute({ children, ...rest }) {
   }
 
   return children;
-}
+};
