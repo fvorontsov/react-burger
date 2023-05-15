@@ -7,14 +7,6 @@ import {
 import { ConstructorList } from "./constructor-list/ConstructorList";
 import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  ADD_INGREDIENT,
-  SELECT_BUN,
-} from "../../services/actions/burger-constructor";
-import {
-  INCREASE_INGREDIENT_QUANTITY,
-  SELECT_BUNS,
-} from "../../services/actions/burger-ingredients";
 import { placeOrder } from "../../services/actions/order-details";
 import { useDrop } from "react-dnd";
 import {
@@ -26,6 +18,12 @@ import {
 import { EmptyConstructorCard } from "./constructor-list/empty-constructor-card/EmptyConstructorCard";
 import { useNavigate } from "react-router-dom";
 import { TCountedIngredient } from "../../types";
+import {
+  ADD_INGREDIENT,
+  INCREASE_INGREDIENT_QUANTITY,
+  SELECT_BUN,
+  SELECT_BUNS,
+} from "../../services/constants";
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch<any>();

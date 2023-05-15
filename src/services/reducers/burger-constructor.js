@@ -1,9 +1,10 @@
 import {
-  ADD_INGREDIENT, CLEAR_INGREDIENTS,
+  ADD_INGREDIENT,
+  CLEAR_INGREDIENTS,
   MOVE_INGREDIENT,
   REMOVE_INGREDIENT,
   SELECT_BUN,
-} from "../actions/burger-constructor";
+} from "../constants";
 import { v4 as uuid } from "uuid";
 
 const initialState = {
@@ -52,7 +53,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         ...state,
         ingredients: initialState.ingredients,
         bun: initialState.bun,
-      }
+      };
     }
     default: {
       return state;

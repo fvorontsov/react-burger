@@ -6,7 +6,7 @@ import {
   FETCH_INGREDIENTS_REQUEST_SUCCEED,
   INCREASE_INGREDIENT_QUANTITY,
   SELECT_BUNS,
-} from "../actions/burger-ingredients";
+} from "../constants";
 import { IngredientType } from "../../utils/constants";
 
 const initialState = {

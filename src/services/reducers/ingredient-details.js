@@ -3,7 +3,7 @@ import {
   DESELECT_INGREDIENT,
   OPEN_INGREDIENT_DETAILS_MODAL,
   SELECT_INGREDIENT,
-} from "../actions/ingredient-details";
+} from "../constants";
 
 const initialState = {
   selectedIngredient: {

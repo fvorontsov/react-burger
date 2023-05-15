@@ -7,16 +7,16 @@ import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { ItemTypes } from "../../../../utils/constants";
 import { useDispatch } from "react-redux";
 import React, { FC } from "react";
+import { TConstructorCard, TConstructorIngredient } from "../../../../types";
 import {
+  DECREASE_INGREDIENT_QUANTITY,
   MOVE_INGREDIENT,
   REMOVE_INGREDIENT,
-} from "../../../../services/actions/burger-constructor";
-import { DECREASE_INGREDIENT_QUANTITY } from "../../../../services/actions/burger-ingredients";
-import { TConstructorCard, TConstructorIngredient } from "../../../../types";
+} from "../../../../services/constants";
 
 export const ConstructorCard: FC<TConstructorCard> = ({
   ingredient,
-  index
+  index,
 }) => {
   const dispatch = useDispatch();
   const { name, price, image, uuid, _id } = ingredient;

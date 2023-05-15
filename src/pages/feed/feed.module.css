@@ -1,0 +1,21 @@
+.main {
+  max-width: 1260px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 600px max-content;
+  grid-template-rows: 1fr max-content;
+  gap: 0 calc(var(--offset-base-size)  * 15);
+}
+
+.orders {
+  grid-column-start: 1;
+  grid-row-start: 2;
+  max-height: calc(100vh - 280px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.stats {
+  grid-column-start: 2;
+  grid-row-start: 2;
+}

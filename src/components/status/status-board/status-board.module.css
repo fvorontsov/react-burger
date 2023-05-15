@@ -1,0 +1,16 @@
+.board {
+  grid-column-start: 2;
+  grid-row-start: 2;
+}
+
+.stats {
+  grid-row-start: 2;
+  display: grid;
+  grid-template-columns: minmax(272px, max-content) max-content;
+  grid-template-rows: max-content max-content;
+  grid-gap: 24px 36px;
+}
+
+.shadow {
+  text-shadow: 0 0 16px rgba(51, 51, 255, 0.25), 0 0 8px rgba(51, 51, 255, 0.25), 0 4px 32px rgba(51, 51, 255, 0.5);
+}

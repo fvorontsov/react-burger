@@ -3,11 +3,6 @@ import "../../App.css";
 import { AppHeader } from "../app-header/AppHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/burger-ingredients";
-import {
-  CLOSE_INGREDIENT_DETAILS_MODAL,
-  DESELECT_INGREDIENT,
-} from "../../services/actions/ingredient-details";
-import { CLOSE_ORDER_DETAILS_MODAL } from "../../services/actions/order-details";
 import { Modal } from "../modal/Modal";
 import { IngredientDetails } from "../burger-ingredients/ingredient-details/IngredientDetails";
 import { OrderDetails } from "../burger-constructor/order-details/OrderDetails";
@@ -25,6 +20,13 @@ import { Paths } from "../../utils/constants";
 import { getUser } from "../../services/actions/profile";
 import { NotFoundPage } from "../../pages/not-found/NotFoundPage";
 import { ProtectedRoute } from "../protected-route/ProtectedRoute";
+import {
+  CLOSE_INGREDIENT_DETAILS_MODAL,
+  CLOSE_ORDER_DETAILS_MODAL,
+  DESELECT_INGREDIENT,
+} from "../../services/constants";
+import { FeedPage } from "../../pages/feed/feed";
+import {OrderInfoPage} from "../../pages/order-info/OrderInfoPage";
 
 export const App: FC = () => {
   const dispatch = useDispatch<any>();
@@ -66,6 +68,7 @@ export const App: FC = () => {
           <Route path={Paths.HOME} element={<HomePage />} />
           <Route path={Paths.LOGIN} element={<LoginPage />} />
           <Route path={Paths.REGISTER} element={<RegistrationPage />} />
+          <Route path={Paths.FEED} element={<FeedPage />} />
           <Route
             path={Paths.FORGOT_PASSWORD}
             element={<ForgotPasswordPage />}

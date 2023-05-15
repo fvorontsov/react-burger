@@ -3,12 +3,10 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsList } from "./ingredients-list/IngredientsList";
 import React, { FC, SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  OPEN_INGREDIENT_DETAILS_MODAL,
-  selectIngredient,
-} from "../../services/actions/ingredient-details";
 import { IngredientType } from "../../utils/constants";
 import { TCountedIngredient } from "../../types";
+import { selectIngredient } from "../../services/actions/ingredient-details";
+import { OPEN_INGREDIENT_DETAILS_MODAL } from "../../services/constants";
 
 export const BurgerIngredients: FC = () => {
   const dispatch = useDispatch();
