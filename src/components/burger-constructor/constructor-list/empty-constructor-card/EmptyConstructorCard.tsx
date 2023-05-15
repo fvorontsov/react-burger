@@ -1,7 +1,8 @@
 import styles from "./empty-constructor-card.module.css";
 import { BunType } from "../../../../utils/constants";
+import { FC } from "react";
 
-export const EmptyConstructorCard = ({ type }) => {
+export const EmptyConstructorCard: FC<{ type: string }> = ({ type }) => {
   return (
     <div
       className={`${styles.card} ${

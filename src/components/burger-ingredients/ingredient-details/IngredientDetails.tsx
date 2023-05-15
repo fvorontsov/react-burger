@@ -1,11 +1,11 @@
 import styles from "./ingredient-details.module.css";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { selectIngredient } from "../../../services/actions/ingredient-details";
+import { TCountedIngredient } from "../../../types";
 
-const ListItem = ({ text }) => {
+const ListItem: FC<{ text: string }> = ({ text }) => {
   return (
     <li
       className={`${styles.item} text text_type_main-default text_color_inactive`}
@@ -15,23 +15,19 @@ const ListItem = ({ text }) => {
   );
 };
 
-ListItem.propTypes = {
-  text: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-};
-
-export const IngredientDetails = () => {
+export const IngredientDetails: FC = () => {
   const { selectedIngredient } = useSelector(
-    (state) => state.ingredientDetails
+    (state: any) => state.ingredientDetails
   );
-  const { ingredients } = useSelector((state) => state.burgerIngredients);
-  const dispatch = useDispatch();
+  const { ingredients } = useSelector((state: any) => state.burgerIngredients);
+  const dispatch = useDispatch<any>();
   const params = useParams();
 
   useEffect(() => {
     if (!selectedIngredient._id) {
       if (ingredients.length) {
         const viewedIngredient = ingredients.find(
-          (item) => item._id === params.id
+          (item: TCountedIngredient) => item._id === params.id
         );
         dispatch(selectIngredient(viewedIngredient));
       }

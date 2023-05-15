@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, FC, FormEvent } from "react";
 import styles from "../login/login.module.css";
 import {
   Button,
@@ -8,27 +8,28 @@ import { Inputs, Paths } from "../../utils/constants";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword } from "../../services/actions/forgot-password";
+import { TForgotPasswordForm } from "../../types";
 
-export const ForgotPasswordPage = () => {
-  const dispatch = useDispatch();
+export const ForgotPasswordPage: FC = () => {
+  const dispatch = useDispatch<any>();
 
   const { isAuthenticated, forgotPasswordRequestSucceed } = useSelector(
-    (state) => state.access
+    (state: any) => state.access
   );
 
-  const [formValue, setFormValue] = React.useState({
+  const [formValue, setFormValue] = React.useState<TForgotPasswordForm>({
     email: "",
   });
 
-  function onFormChange(evt) {
+  function onFormChange(event: ChangeEvent<HTMLInputElement>) {
     setFormValue({
       ...formValue,
-      [evt.target.name]: evt.target.value,
+      [event.target.name]: event.target.value,
     });
   }
 
-  function onSubmit(evt) {
-    evt.preventDefault();
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
     dispatch(forgotPassword(formValue));
   }
 
@@ -53,7 +54,12 @@ export const ForgotPasswordPage = () => {
             value={formValue.email}
           />
         </div>
-        <Button type="primary" size="large" onClick={onSubmit} htmlType={"submit"}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={onSubmit}
+          htmlType={"submit"}
+        >
           Восстановить
         </Button>
       </form>

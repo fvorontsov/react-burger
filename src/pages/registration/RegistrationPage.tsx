@@ -7,32 +7,33 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Inputs, Paths } from "../../utils/constants";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import React from "react";
+import React, { ChangeEvent, FC, FormEvent } from "react";
 import { register } from "../../services/actions/register";
+import { TRegistrationForm } from "../../types";
 
-export const RegistrationPage = () => {
-  const dispatch = useDispatch();
+export const RegistrationPage: FC = () => {
+  const dispatch = useDispatch<any>();
 
   const { isAuthenticated, registerRequestFailed } = useSelector(
-    (state) => state.access
+    (state: any) => state.access
   );
   const { state } = useLocation();
 
-  const [formValue, setFormValue] = React.useState({
+  const [formValue, setFormValue] = React.useState<TRegistrationForm>({
     name: "",
     email: "",
     password: "",
   });
 
-  function onFormChange(evt) {
+  function onFormChange(event: ChangeEvent<HTMLInputElement>) {
     setFormValue({
       ...formValue,
-      [evt.target.name]: evt.target.value,
+      [event.target.name]: event.target.value,
     });
   }
 
-  function onSubmit(evt) {
-    evt.preventDefault();
+  function onSubmit(event: FormEvent) {
+    event.preventDefault();
     dispatch(register(formValue));
   }
 

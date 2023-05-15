@@ -7,8 +7,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useLocation } from "react-router-dom";
 import { Paths } from "../../utils/constants";
+import { FC } from "react";
 
-export const AppHeader = () => {
+export const AppHeader: FC = () => {
   const location = useLocation();
 
   return (

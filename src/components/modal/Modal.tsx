@@ -2,13 +2,13 @@ import ReactDOM from "react-dom";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ModalOverlay } from "./modal-overlay/ModalOverlay";
-import PropTypes from "prop-types";
-import React from "react";
+import React, { FC } from "react";
+import { TModal } from "../../types";
 
-const modalRoot = document.getElementById("modal-root");
-export const Modal = ({ children, title, closeModal }) => {
+const modalRoot: HTMLElement = document.getElementById("modal-root")!;
+export const Modal: FC<TModal> = ({ children, title, closeModal }) => {
   const handleKeydown = React.useCallback(
-    (keydownEvent) => {
+    (keydownEvent: KeyboardEvent) => {
       if (keydownEvent.key === "Escape") {
         closeModal();
       }
@@ -43,10 +43,4 @@ export const Modal = ({ children, title, closeModal }) => {
     </div>,
     modalRoot
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  title: PropTypes.string,
-  closeModal: PropTypes.func.isRequired,
 };

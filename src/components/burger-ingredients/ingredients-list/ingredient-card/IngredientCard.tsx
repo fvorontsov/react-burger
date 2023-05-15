@@ -3,15 +3,17 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { FC } from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "../../../../utils/constants";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { TIngredientCard } from "../../../../types";
 
-export const IngredientCard = ({ ingredient, onElementClick }) => {
+export const IngredientCard: FC<TIngredientCard> = ({
+  ingredient,
+  onElementClick,
+}) => {
   const { _id, image, price, name } = ingredient;
-
-  const location = useLocation();
 
   const [, dragRef] = useDrag({
     type: ItemTypes.INGREDIENT_CARD,
