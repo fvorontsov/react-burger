@@ -1,9 +1,9 @@
 import styles from "./ingredient-details.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { selectIngredient } from "../../../services/actions/ingredient-details";
 import { TCountedIngredient } from "../../../types";
+import { selectIngredient } from "../../../store/actions/IngredientDetailsActions";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/redux";
 
 const ListItem: FC<{ text: string }> = ({ text }) => {
   return (
@@ -16,23 +16,29 @@ const ListItem: FC<{ text: string }> = ({ text }) => {
 };
 
 export const IngredientDetails: FC = () => {
-  const { selectedIngredient } = useSelector(
-    (state: any) => state.ingredientDetails
+  const selectedIngredient = useAppSelector(
+    (s) => s.ingredientDetailsReducer.selectedIngredient
   );
-  const { ingredients } = useSelector((state: any) => state.burgerIngredients);
-  const dispatch = useDispatch<any>();
+  const ingredients = useAppSelector((s) => s.ingredientsReducer.ingredients);
+  const dispatch = useAppDispatch();
   const params = useParams();
 
   useEffect(() => {
-    if (!selectedIngredient._id) {
+    if (!selectedIngredient) {
       if (ingredients.length) {
         const viewedIngredient = ingredients.find(
           (item: TCountedIngredient) => item._id === params.id
         );
-        dispatch(selectIngredient(viewedIngredient));
+        if (viewedIngredient) {
+          dispatch(selectIngredient(viewedIngredient));
+        }
       }
     }
   }, [ingredients]);
+
+  if (!selectedIngredient) {
+    return <div>empty</div>;
+  }
 
   const { name, calories, carbohydrates, fat, proteins, image } =
     selectedIngredient;
@@ -47,10 +53,10 @@ export const IngredientDetails: FC = () => {
           <ListItem text="Белки, г" />
           <ListItem text="Жиры, г" />
           <ListItem text="Углеводы, г" />
-          <ListItem text={calories} />
-          <ListItem text={proteins} />
-          <ListItem text={fat} />
-          <ListItem text={carbohydrates} />
+          <ListItem text={"" + calories} />
+          <ListItem text={"" + proteins} />
+          <ListItem text={"" + fat} />
+          <ListItem text={"" + carbohydrates} />
         </ul>
       </figcaption>
     </figure>

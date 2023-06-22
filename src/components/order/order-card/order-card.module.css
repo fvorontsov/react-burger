@@ -25,3 +25,12 @@
   flex-direction: row;
   align-items: center;
 }
+
+.link {
+  text-decoration: none;
+  color: var(--text-primary-color);
+}
+
+.done {
+  color: #00CCCC;
+}

@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 import React, { ChangeEvent, FC, FormEvent } from "react";
 import styles from "../login/login.module.css";
 import {
@@ -6,22 +5,19 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Inputs, Paths } from "../../utils/constants";
-import { Link, Navigate } from "react-router-dom";
-import { resetPassword } from "../../services/actions/reset-password";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TResetPasswordForm } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
+import { finishResetPassword } from "../../utils/api";
+import { setIsWaitingReset } from "../../store/actions/UserActions";
+import { logErrorDescription } from "../../utils/utils";
 
 export const ResetPasswordPage: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
 
-  const { forgotPasswordRequestSucceed } = useSelector(
-    (state: any) => state.access
-  );
+  const navigate = useNavigate();
 
-  const {
-    isAuthenticated,
-    resetPasswordRequestSucceed,
-    resetPasswordRequestFailed,
-  } = useSelector((state: any) => state.access);
+  const isAuthenticated = useAppSelector((s) => s.userSliceReducer.user);
 
   const [formValue, setFormValue] = React.useState<TResetPasswordForm>({
     password: "",
@@ -38,16 +34,19 @@ export const ResetPasswordPage: FC = () => {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    dispatch(resetPassword(formValue));
+    finishResetPassword(formValue.password, formValue.token)
+      .then(() => {
+        navigate("/login");
+        dispatch(setIsWaitingReset(false));
+      })
+      .catch((error) => logErrorDescription(error));
   }
 
   function onIconClick() {
     setShowPassword(!showPassword);
   }
 
-  if (resetPasswordRequestSucceed || !forgotPasswordRequestSucceed) {
-    return <Navigate to={Paths.LOGIN} />;
-  } else if (isAuthenticated) {
+  if (isAuthenticated) {
     return <Navigate to={Paths.HOME} />;
   }
 
@@ -66,7 +65,6 @@ export const ResetPasswordPage: FC = () => {
             name={Inputs.Names.PASSWORD}
             onChange={onFormChange}
             onIconClick={onIconClick}
-            error={resetPasswordRequestFailed}
           />
         </div>
         <div className="mb-6">
@@ -76,7 +74,6 @@ export const ResetPasswordPage: FC = () => {
             name={Inputs.Names.CODE}
             onChange={onFormChange}
             value={formValue.token}
-            error={resetPasswordRequestFailed}
           />
         </div>
 

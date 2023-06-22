@@ -2,14 +2,18 @@ import { useDispatch } from "react-redux";
 import React, { FC } from "react";
 import styles from "./profile.module.css";
 import { NavLink, Outlet } from "react-router-dom";
-import { logout } from "../../services/actions/profile";
 import { Paths } from "../../utils/constants";
+import { clear } from "../../store/actions/UserActions";
+import { logout } from "../../utils/api";
+import { logErrorDescription } from "../../utils/utils";
 
 export const ProfilePage: FC = () => {
   const dispatch = useDispatch<any>();
 
   function onLogout() {
-    dispatch(logout());
+    logout()
+      .then(() => dispatch(clear()))
+      .catch((error) => logErrorDescription(error));
   }
 
   return (

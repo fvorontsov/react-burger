@@ -1,4 +1,5 @@
 import { TInput, TString } from "../types";
+import { TOrdersList } from "../types/order";
 
 export const IngredientType: TString = {
   BUN: "bun",
@@ -62,8 +63,7 @@ export const Paths: TString = {
   ORDER: "/feed/:id"
 };
 
-export const ORDER_TEST = {
-  "success": true,
+export const ORDER_TEST:TOrdersList = {
   "orders": [
     {
       "_id": "624ab12b1a3b2c001bcf5350",

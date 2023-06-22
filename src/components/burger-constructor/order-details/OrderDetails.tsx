@@ -1,10 +1,10 @@
 import styles from "./order-details.module.css";
 import image from "../../../images/done.svg";
-import { useSelector } from "react-redux";
 import { FC } from "react";
+import { useAppSelector } from "../../../store/hooks/redux";
 
 export const OrderDetails: FC = () => {
-  const { orderId } = useSelector((state: any) => state.orderDetails);
+  const orderId = useAppSelector((s) => s.orderDetailsReducer.orderId);
 
   return (
     <div className={`${styles.container} mt-30 mb-30`}>

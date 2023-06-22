@@ -5,20 +5,20 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop, XYCoord } from "react-dnd";
 import { ItemTypes } from "../../../../utils/constants";
-import { useDispatch } from "react-redux";
 import React, { FC } from "react";
 import { TConstructorCard, TConstructorIngredient } from "../../../../types";
+import { useAppDispatch } from "../../../../store/hooks/redux";
 import {
-  DECREASE_INGREDIENT_QUANTITY,
-  MOVE_INGREDIENT,
-  REMOVE_INGREDIENT,
-} from "../../../../services/constants";
+  moveIngredient,
+  removeIngredient,
+} from "../../../../store/actions/BurgerConstructorActions";
+import { decreaseQuantity } from "../../../../store/actions/BurgerIngredientActions";
 
 export const ConstructorCard: FC<TConstructorCard> = ({
   ingredient,
   index,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { name, price, image, uuid, _id } = ingredient;
 
   const ref = React.useRef<HTMLDivElement>(null);
@@ -34,14 +34,8 @@ export const ConstructorCard: FC<TConstructorCard> = ({
   });
 
   function handleClose(uuid: string, _id: string) {
-    dispatch({
-      type: REMOVE_INGREDIENT,
-      uuid: uuid,
-    });
-    dispatch({
-      type: DECREASE_INGREDIENT_QUANTITY,
-      _id: _id,
-    });
+    dispatch(removeIngredient(uuid));
+    dispatch(decreaseQuantity(_id));
   }
 
   const [, dropRef] = useDrop({
@@ -73,11 +67,7 @@ export const ConstructorCard: FC<TConstructorCard> = ({
         }
       }
 
-      dispatch({
-        type: MOVE_INGREDIENT,
-        dragIndex: dragIndex,
-        hoverIndex: hoverIndex,
-      });
+      dispatch(moveIngredient({ dragIndex, hoverIndex }));
 
       item.index = hoverIndex;
     },

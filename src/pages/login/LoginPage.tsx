@@ -6,18 +6,17 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { ChangeEvent, FC, FormEvent } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { login } from "../../services/actions/login";
 import { TLoginForm } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
+import { userLogin } from "../../store/actions/UserActions";
 
 export const LoginPage: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const { isAuthenticated, loginRequestFailed } = useSelector(
-    (state: any) => state.access
-  );
+  const isAuthenticated = useAppSelector((s) => s.userSliceReducer.user);
+
   const [formValue, setFormValue] = React.useState<TLoginForm>({
     email: "",
     password: "",
@@ -32,7 +31,7 @@ export const LoginPage: FC = () => {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    dispatch(login(formValue));
+    dispatch(userLogin(formValue));
   }
 
   if (isAuthenticated) {
@@ -50,7 +49,7 @@ export const LoginPage: FC = () => {
             name={Inputs.Names.EMAIL}
             onChange={onFormChange}
             value={formValue.email}
-            error={loginRequestFailed}
+            // error={loginRequestFailed}
           />
         </div>
         <div className="mb-6">

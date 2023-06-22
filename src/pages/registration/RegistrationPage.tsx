@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 import styles from "../login/login.module.css";
 import {
   Button,
@@ -8,33 +7,32 @@ import {
 import { Inputs, Paths } from "../../utils/constants";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import React, { ChangeEvent, FC, FormEvent } from "react";
-import { register } from "../../services/actions/register";
-import { TRegistrationForm } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
+import { IUserWithPassword } from "../../types/user";
+import { userRegister } from "../../store/actions/UserActions";
 
 export const RegistrationPage: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((s) => s.userSliceReducer.user);
 
-  const { isAuthenticated, registerRequestFailed } = useSelector(
-    (state: any) => state.access
-  );
   const { state } = useLocation();
 
-  const [formValue, setFormValue] = React.useState<TRegistrationForm>({
+  const [user, setUser] = React.useState<IUserWithPassword>({
     name: "",
     email: "",
     password: "",
   });
 
   function onFormChange(event: ChangeEvent<HTMLInputElement>) {
-    setFormValue({
-      ...formValue,
+    setUser({
+      ...user,
       [event.target.name]: event.target.value,
     });
   }
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    dispatch(register(formValue));
+    dispatch(userRegister(user));
   }
 
   if (isAuthenticated) {
@@ -51,7 +49,7 @@ export const RegistrationPage: FC = () => {
             placeholder={Inputs.Placeholders.NAME}
             name={Inputs.Names.NAME}
             onChange={onFormChange}
-            value={formValue.name}
+            value={user.name}
           />
         </div>
         <div className="mb-6">
@@ -60,13 +58,13 @@ export const RegistrationPage: FC = () => {
             placeholder={Inputs.Placeholders.EMAIL}
             name={Inputs.Names.EMAIL}
             onChange={onFormChange}
-            value={formValue.email}
-            error={registerRequestFailed}
+            value={user.email}
+            // error={registerRequestFailed}
           />
         </div>
         <div className="mb-6">
           <PasswordInput
-            value={formValue.password}
+            value={user.password}
             name={Inputs.Names.PASSWORD}
             onChange={onFormChange}
           />

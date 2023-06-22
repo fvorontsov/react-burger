@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import styles from "./order-info-list.module.css";
-import { useSelector } from "react-redux";
 import { OrderInfoCard } from "../order-info-card/OrderInfoCard";
+import { useAppSelector } from "../../store/hooks/redux";
 
 export const OrderInfoList: FC = () => {
-  const ingredientsData = useSelector(
-    (state: any) => state.burgerIngredients.ingredients
+  const ingredientsData = useAppSelector(
+    (s) => s.ingredientsReducer.ingredients
   );
 
   return (

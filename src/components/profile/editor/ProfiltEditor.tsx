@@ -10,28 +10,35 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile-editor.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { editProfile } from "../../../services/actions/profile";
 import { Inputs } from "../../../utils/constants";
-import { TProfileEditorForm } from "../../../types";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/redux";
+import {TProfileEditorForm} from "../../../types";
+import {setUser} from "../../../store/actions/UserActions";
+import {updateUserProfile} from "../../../utils/api";
+import {logErrorDescription} from "../../../utils/utils";
 
 export const ProfileEditor: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
 
-  const { name, email, password } = useSelector(
-    (state: any) => state.access.user
-  );
+  const user = useAppSelector((s) => s.userSliceReducer.user);
 
-  const [formValue, setFormValue] = React.useState<TProfileEditorForm>({
-    name: name,
-    email: email,
-    password: password,
-  });
+  if (!user) {
+    throw new Error("Invalid user state");
+  }
+
+  const { name, email } = user;
+  const password = "";
 
   const [focus, setFocus] = React.useState({
     name: false,
     email: false,
     password: false,
+  });
+
+  const [formValue, setFormValue] = React.useState<TProfileEditorForm>({
+    name: name,
+    email: email,
+    password: password,
   });
 
   const isChanged = useMemo(() => {
@@ -51,7 +58,11 @@ export const ProfileEditor: FC = () => {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    dispatch(editProfile(formValue, true));
+    updateUserProfile(formValue)
+        .then(updatedProfile => {
+          dispatch(setUser(updatedProfile));
+        })
+        .catch(error => logErrorDescription(error));
   }
 
   function onCancel(event: SyntheticEvent) {

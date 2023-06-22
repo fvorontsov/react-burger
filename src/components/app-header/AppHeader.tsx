@@ -38,17 +38,17 @@ export const AppHeader: FC = () => {
               </li>
 
               <li className={styles.link_container}>
-                <Link to={Paths.ORDERS} className={`${styles.link} ml-5`}>
+                <Link to={Paths.FEED} className={`${styles.link} ml-5`}>
                   <ListIcon
                     type={
-                      location.pathname.startsWith(Paths.ORDERS)
+                      location.pathname.startsWith(Paths.FEED)
                         ? "primary"
                         : "secondary"
                     }
                   />
                   <p
                     className={`text text_type_main-default ml-2 ${
-                      location.pathname.startsWith(Paths.ORDERS)
+                      location.pathname.startsWith(Paths.FEED)
                         ? styles.link_text_active
                         : styles.link_text
                     }`}
