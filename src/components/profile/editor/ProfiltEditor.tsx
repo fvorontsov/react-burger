@@ -12,10 +12,10 @@ import {
 import styles from "./profile-editor.module.css";
 import { Inputs } from "../../../utils/constants";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/redux";
-import {TProfileEditorForm} from "../../../types";
-import {setUser} from "../../../store/actions/UserActions";
-import {updateUserProfile} from "../../../utils/api";
-import {logErrorDescription} from "../../../utils/utils";
+import { TProfileEditorForm } from "../../../types";
+import { setUser } from "../../../store/actions/UserActions";
+import { updateUserProfile } from "../../../utils/api";
+import { logErrorDescription } from "../../../utils/utils";
 
 export const ProfileEditor: FC = () => {
   const dispatch = useAppDispatch();
@@ -59,10 +59,10 @@ export const ProfileEditor: FC = () => {
   function onSubmit(event: FormEvent) {
     event.preventDefault();
     updateUserProfile(formValue)
-        .then(updatedProfile => {
-          dispatch(setUser(updatedProfile));
-        })
-        .catch(error => logErrorDescription(error));
+      .then((updatedProfile) => {
+        dispatch(setUser(updatedProfile));
+      })
+      .catch((error) => logErrorDescription(error));
   }
 
   function onCancel(event: SyntheticEvent) {

@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import {TCountedIngredient} from "../../types";
+import { TCountedIngredient } from "../../types";
 
 export const selectIngredient = createAction<TCountedIngredient>(
   "ingredientDetails/selectIngredient"

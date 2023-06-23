@@ -1,7 +1,7 @@
 import { createAppAsyncThunk, getErrorDescription } from "../../utils/utils";
 import { TCountedIngredient } from "../../types";
 import { createAction } from "@reduxjs/toolkit";
-import {fetchIngredients} from "../../utils/api";
+import { fetchIngredients } from "../../utils/api";
 
 export const loadIngredients = createAppAsyncThunk<Array<TCountedIngredient>>(
   "users/fetchIngredients",

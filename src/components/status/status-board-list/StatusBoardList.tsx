@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
-import styles from "./status-board-list.module.css"
+import React, { FC } from "react";
+import styles from "./status-board-list.module.css";
 
 type TStatusBoardList = {
-    done?: boolean;
-    orders: number[];
-}
+  done?: boolean;
+  orders: number[];
+};
 
 export const StatusBoardList:FC<TStatusBoardList> = ({ done, orders }) => {
     const maxOrders = orders.slice(0, 28);

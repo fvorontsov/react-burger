@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import {OrderInfo} from "../../components/order-info/OrderInfo";
+import { OrderInfo } from "../../components/order-info/OrderInfo";
 
 export const OrderInfoPage: FC = () => {
   return (

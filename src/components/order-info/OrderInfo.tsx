@@ -17,8 +17,8 @@ type TOrderInfoParams = {
 };
 
 type TOrderInfo = {
-    modal?: boolean;
-}
+  modal?: boolean;
+};
 
 export const OrderInfo: FC<TOrderInfo> = ({ modal = false }) => {
   const { id } = useParams<TOrderInfoParams>();

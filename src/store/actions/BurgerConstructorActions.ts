@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import {TConstructorIngredient, TCountedIngredient} from "../../types";
+import { TConstructorIngredient } from "../../types";
 
 export const addIngredient = createAction<TConstructorIngredient>(
   "burgerConstructor/clearQuantity"

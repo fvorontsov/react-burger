@@ -13,7 +13,6 @@ import { ForgotPasswordPage } from "../../pages/forgot-password/ForgotPasswordPa
 import { ResetPasswordPage } from "../../pages/reset-password/ResetPasswordPage";
 import { ProfilePage } from "../../pages/profile/ProfilePage";
 import { ProfileEditor } from "../profile/editor/ProfiltEditor";
-import { ProfileOrders } from "../profile/orders/ProfileOrders";
 import { Paths } from "../../utils/constants";
 import { NotFoundPage } from "../../pages/not-found/NotFoundPage";
 import { ProtectedRoute } from "../protected-route/ProtectedRoute";
@@ -25,6 +24,7 @@ import { setIsAuthChecked, setUser } from "../../store/actions/UserActions";
 import { logErrorDescription } from "../../utils/utils";
 import { closeOrderDetailsModal } from "../../store/actions/OrderDetailsActions";
 import { OrderInfo } from "../order-info/OrderInfo";
+import { ProfileOrdersPage } from "../../pages/profile-orders/ProfileOrdersPage";
 
 export const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -46,6 +46,10 @@ export const App: FC = () => {
         ingredientCard: false,
       },
     });
+  }
+
+  function closeOrderInfoModal() {
+    navigate(-1);
   }
 
   function closeOrderModal() {
@@ -94,9 +98,11 @@ export const App: FC = () => {
             <Route path={Paths.PROFILE} element={<ProfileEditor />}></Route>
             <Route
               path={Paths.PROFILE + Paths.ORDERS}
-              element={<ProfileOrders />}
+              element={<ProfileOrdersPage />}
             />
           </Route>
+          <Route path="/profile/orders/:id" element={<OrderInfo />} />
+
           <Route path="/:ingredients/:id" element={<IngredientDetails />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -125,18 +131,24 @@ export const App: FC = () => {
       )}
 
       {orderInfoModal && (
-          <Routes>
-            <Route
-                path="/:feed/:id"
-                element={
-                  <Modal
-                      closeModal={closeIngredientDetailsModal}
-                  >
-                    <OrderInfo modal={true}/>
-                  </Modal>
-                }
-            />
-          </Routes>
+        <Routes>
+          <Route
+            path="/:feed/:id"
+            element={
+              <Modal closeModal={closeOrderInfoModal}>
+                <OrderInfo modal={true} />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal closeModal={closeOrderInfoModal}>
+                <OrderInfo modal={true} />
+              </Modal>
+            }
+          />
+        </Routes>
       )}
     </div>
   );

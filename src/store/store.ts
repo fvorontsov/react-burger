@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
   orderDetailsReducer,
   userSliceReducer,
   feedSliceReducer,
-  ordersSliceReducer
+  ordersSliceReducer,
 });
 
 export const setupStore = () => {

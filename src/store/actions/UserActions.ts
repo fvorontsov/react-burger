@@ -1,7 +1,7 @@
 import { createAction } from "@reduxjs/toolkit";
 import { ILoginData, IUser, IUserWithPassword } from "../../types/user";
 import { createAppAsyncThunk, getErrorDescription } from "../../utils/utils";
-import {login, register} from "../../utils/api";
+import { login, register } from "../../utils/api";
 
 export const userRegister = createAppAsyncThunk<IUser, IUserWithPassword>(
   "user/register",

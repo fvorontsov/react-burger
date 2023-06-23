@@ -7,7 +7,7 @@ export interface IUserWithPassword extends IUser {
     password: string;
 }
 
-export interface ILoginData {
+export type ILoginData = {
     email: string;
     password: string;
 }

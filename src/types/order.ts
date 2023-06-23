@@ -1,9 +1,9 @@
-import {TCountedIngredient, TIngredientCommon} from "./ingredients";
+import { TCountedIngredient } from "./ingredients";
 
 export enum EOrderStatus {
-    Created = "created",
-    Pending = "pending",
-    Done = "done",
+  Created = "created",
+  Pending = "pending",
+  Done = "done",
 }
 
 export type TOrder = {
