@@ -25,7 +25,7 @@ export const IngredientCard: FC<TIngredientCard> = ({
       key={_id}
       to={`ingredients/${_id}`}
       state={{
-        fromCard: true,
+        ingredientCard: true,
       }}
       onClick={() => onElementClick(ingredient)}
       ref={dragRef}

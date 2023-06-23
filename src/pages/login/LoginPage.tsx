@@ -49,7 +49,6 @@ export const LoginPage: FC = () => {
             name={Inputs.Names.EMAIL}
             onChange={onFormChange}
             value={formValue.email}
-            // error={loginRequestFailed}
           />
         </div>
         <div className="mb-6">

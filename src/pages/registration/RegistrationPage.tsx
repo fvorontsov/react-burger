@@ -59,7 +59,6 @@ export const RegistrationPage: FC = () => {
             name={Inputs.Names.EMAIL}
             onChange={onFormChange}
             value={user.email}
-            // error={registerRequestFailed}
           />
         </div>
         <div className="mb-6">

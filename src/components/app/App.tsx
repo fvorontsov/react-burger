@@ -35,16 +35,15 @@ export const App: FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const fromCard = location.state?.fromCard;
+  const ingredientModal = location.state?.ingredientCard;
+  const orderInfoModal = location.state?.orderCard;
 
   function closeIngredientDetailsModal() {
-    // dispatch({ type: CLOSE_INGREDIENT_DETAILS_MODAL });
-    // dispatch({ type: DESELECT_INGREDIENT });
     navigate(Paths.HOME, {
       replace: true,
       state: {
         ...(location.state || {}),
-        fromCard: false,
+        ingredientCard: false,
       },
     });
   }
@@ -73,7 +72,7 @@ export const App: FC = () => {
     <div>
       <AppHeader />
       <main className={styles.container}>
-        <Routes location={fromCard || location}>
+        <Routes location={ingredientModal || orderInfoModal || location}>
           <Route path={Paths.HOME} element={<HomePage />} />
           <Route path={Paths.LOGIN} element={<LoginPage />} />
           <Route path={Paths.REGISTER} element={<RegistrationPage />} />
@@ -103,7 +102,7 @@ export const App: FC = () => {
         </Routes>
       </main>
 
-      {fromCard && (
+      {ingredientModal && (
         <Routes>
           <Route
             path="/:ingredients/:id"
@@ -123,6 +122,21 @@ export const App: FC = () => {
         <Modal closeModal={closeOrderModal}>
           <OrderDetails />
         </Modal>
+      )}
+
+      {orderInfoModal && (
+          <Routes>
+            <Route
+                path="/:feed/:id"
+                element={
+                  <Modal
+                      closeModal={closeIngredientDetailsModal}
+                  >
+                    <OrderInfo modal={true}/>
+                  </Modal>
+                }
+            />
+          </Routes>
       )}
     </div>
   );

@@ -20,7 +20,6 @@ export const OrderCard: FC<TOrderCardProps> = ({ order }) => {
 
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const url = "xxx"; //useRouteMatch
 
   const { number, ingredients, createdAt, name, _id, status } = order;
 
@@ -32,7 +31,11 @@ export const OrderCard: FC<TOrderCardProps> = ({ order }) => {
 
   return (
     <li className={styles.card}>
-      <Link to={{ pathname: `${url}/${_id}` }} className={styles.link}>
+      <Link
+        to={{ pathname: `${number}` }}
+        state={{ orderCard: location }}
+        className={styles.link}
+      >
         <div className={"mt-6 mr-6 ml-6 mb-6"}>
           <div className={styles.header}>
             <p className={"text text_type_digits-default"}>{`#${number}`}</p>
@@ -41,7 +44,7 @@ export const OrderCard: FC<TOrderCardProps> = ({ order }) => {
             </p>
           </div>
           <p className={"text text_type_main-medium mt-6"}>{name}</p>
-          {url === "xxx" && (
+          {false && (
             <p
               className={`text text_type_main-small ${
                 status === "done" && styles.done

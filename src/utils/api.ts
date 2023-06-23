@@ -1,6 +1,7 @@
 import axios, { Method } from "axios";
 import { ILoginData, IUser, IUserWithPassword } from "../types/user";
-import { TCountedIngredient, TIngredientCommon } from "../types";
+import { TCountedIngredient } from "../types";
+import { TOrder } from "../types/order";
 
 const REGISTER_URL = "auth/register";
 const LOGIN_URL = "auth/login";
@@ -137,14 +138,14 @@ export const fetchIngredients = async (): Promise<Array<TCountedIngredient>> => 
     return response.data;
 }
 
-// export interface IOrderResponse extends IResponse {
-//     orders: Array<TOrder>;
-// }
+export interface IOrderResponse extends IResponse {
+    orders: Array<TOrder>;
+}
 
-// export const getOrder = async (orderNumber: string): Promise<Array<TOrder>> => {
-//     const response = await get<IOrderResponse>(`${ORDER_URL}/${orderNumber}`);
-//     return response.orders;
-// }
+export const getOrder = async (orderNumber: string): Promise<Array<TOrder>> => {
+    const response = await get<IOrderResponse>(`${ORDER_URL}/${orderNumber}`);
+    return response.orders;
+}
 
 export const getUserProfile = async (): Promise<IUser> => {
     const response = await requestWithAuth<IResponseWithUser>("GET", USER_URL);

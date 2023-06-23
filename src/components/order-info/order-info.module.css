@@ -2,10 +2,8 @@
   display: flex;
   flex-direction: column;
   justify-items: center;
-  /*align-items: center;*/
 
-  max-width: 640px;
-  margin: 0 auto;
+  width: 640px;
 }
 
 .number {

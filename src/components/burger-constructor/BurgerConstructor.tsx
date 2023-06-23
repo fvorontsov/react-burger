@@ -72,8 +72,6 @@ export const BurgerConstructor: FC = () => {
   }
 
   function handlePlaceOrder() {
-    // dispatch(clearIngredients())
-    // dispatch(clearQuantity())
     if (isAuthenticated) {
       if (bun) {
         const orderIngredientIds = [

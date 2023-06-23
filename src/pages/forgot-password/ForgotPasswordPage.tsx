@@ -38,7 +38,6 @@ export const ForgotPasswordPage: FC = () => {
         navigate("/reset-password");
       })
       .catch((error) => logErrorDescription(error));
-    // dispatch(forgotPassword(formValue));
   }
 
   if (isAuthenticated) {
