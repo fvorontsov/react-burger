@@ -7,12 +7,12 @@ import {
 } from "../actions/IngredientDetailsActions";
 import { TCountedIngredient } from "../../types";
 
-export interface IIngredientDetailsSlice {
+export type TIngredientDetailsState =  {
   selectedIngredient?: TCountedIngredient;
   modalIsOpen: boolean;
 }
 
-const initialState: IIngredientDetailsSlice = {
+const initialState: TIngredientDetailsState = {
   selectedIngredient: undefined,
   modalIsOpen: false,
 };

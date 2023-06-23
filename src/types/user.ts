@@ -1,13 +1,13 @@
-export interface IUser {
-    name: string;
-    email: string;
-}
+export type TUser = {
+  name: string;
+  email: string;
+};
 
-export interface IUserWithPassword extends IUser {
-    password: string;
-}
+export type TUserWithPassword = TUser & {
+  password: string;
+};
 
-export type ILoginData = {
-    email: string;
-    password: string;
-}
+export type TLoginData = {
+  email: string;
+  password: string;
+};

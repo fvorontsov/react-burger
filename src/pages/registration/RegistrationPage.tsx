@@ -8,7 +8,7 @@ import { Inputs, Paths } from "../../utils/constants";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import React, { ChangeEvent, FC, FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
-import { IUserWithPassword } from "../../types/user";
+import { TUserWithPassword } from "../../types/user";
 import { userRegister } from "../../store/actions/UserActions";
 
 export const RegistrationPage: FC = () => {
@@ -17,7 +17,7 @@ export const RegistrationPage: FC = () => {
 
   const { state } = useLocation();
 
-  const [user, setUser] = React.useState<IUserWithPassword>({
+  const [user, setUser] = React.useState<TUserWithPassword>({
     name: "",
     email: "",
     password: "",

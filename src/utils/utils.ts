@@ -49,14 +49,14 @@ export const createAppAsyncThunk = createAsyncThunk.withTypes<{
 }>();
 
 export const getErrorDescription = (
-  error: any,
+  error: unknown,
   defaultMessage: string = "Unknown error"
 ): string => {
   return error instanceof Object ? error.toString() : defaultMessage;
 };
 
 export const logErrorDescription = (
-  error: any,
+  error: unknown,
   defaultMessage: string = "Unknown error"
 ) => {
   console.log(getErrorDescription(error, defaultMessage));
@@ -93,31 +93,31 @@ export const getIngredients = (ids: string[], data: TIngredientCommon[]) => {
   });
 
   if (data.length) {
-    for (let [id, count] of ingredients) {
+    ingredients.forEach((value, key, map) => {
       data.forEach((ingredient) => {
-        if (ingredient._id === id) {
-
+        if (ingredient._id === key) {
+          let count = 1;
           if (ingredient.type === "bun") {
-            buns.add(id);
+            buns.add(key);
             count = 2;
           }
           result.push({ ...ingredient, quantity: count });
         }
       });
-    }
+    });
   }
+
   if (buns.size === 1) {
-      return result;
+    return result;
   }
   return [];
 };
-
 
 export const getDoneInProgressOrders = (orders: TCorrectOrder[]) => {
   const done: number[] = [];
   const inProgress: number[] = [];
   orders.forEach((order) => {
-    if (order.status === 'done') {
+    if (order.status === "done") {
       done.push(order.number);
     } else {
       inProgress.push(order.number);

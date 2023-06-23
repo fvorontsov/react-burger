@@ -13,7 +13,7 @@ import { ForgotPasswordPage } from "../../pages/forgot-password/ForgotPasswordPa
 import { ResetPasswordPage } from "../../pages/reset-password/ResetPasswordPage";
 import { ProfilePage } from "../../pages/profile/ProfilePage";
 import { ProfileEditor } from "../profile/editor/ProfiltEditor";
-import { Paths } from "../../utils/constants";
+import {Paths, TokenIdentifiers} from "../../utils/constants";
 import { NotFoundPage } from "../../pages/not-found/NotFoundPage";
 import { ProtectedRoute } from "../protected-route/ProtectedRoute";
 import { FeedPage } from "../../pages/feed/feed";
@@ -62,8 +62,8 @@ export const App: FC = () => {
       getUserProfile()
         .then((user) => dispatch(setUser(user)))
         .catch((error) => {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
+          localStorage.removeItem(TokenIdentifiers.ACCESS);
+          localStorage.removeItem(TokenIdentifiers.REFRESH);
           logErrorDescription(error);
           dispatch(setIsAuthChecked(true));
         });

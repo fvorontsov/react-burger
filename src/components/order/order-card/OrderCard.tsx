@@ -3,7 +3,6 @@ import styles from "./order-card.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { formatDate } from "../../../utils/utils";
 import { IngredientPreviewList } from "../../ingredient-preview/ingredient-preview-list/IngredientPreviewList";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/redux";
 import { TCorrectOrder } from "../../../types/order";
 import { Link, useLocation } from "react-router-dom";
 
@@ -12,16 +11,9 @@ export type TOrderCardProps = {
 };
 
 export const OrderCard: FC<TOrderCardProps> = ({ order }) => {
-  const ingredientsData = useAppSelector(
-    (s) => s.ingredientsReducer.ingredients
-  );
-
-  const ingredientsIds = order.ingredients;
-
-  const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const { number, ingredients, createdAt, name, _id, status } = order;
+  const { number, ingredients, createdAt, name, status } = order;
 
   const date = React.useMemo(() => formatDate(createdAt), [createdAt]);
   const cost = React.useMemo(

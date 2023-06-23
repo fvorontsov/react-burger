@@ -6,14 +6,14 @@ import {
   placeOrder,
 } from "../actions/OrderDetailsActions";
 
-export interface IOrderDetailsState {
+export type TOrderDetailsState = {
   orderId: string;
   makeOrderRequestInProgress: boolean;
   makeOrderRequestFailed: boolean;
   modalIsOpen: boolean;
-}
+};
 
-const initialState: IOrderDetailsState = {
+const initialState: TOrderDetailsState = {
   orderId: "",
   makeOrderRequestInProgress: false,
   makeOrderRequestFailed: false,

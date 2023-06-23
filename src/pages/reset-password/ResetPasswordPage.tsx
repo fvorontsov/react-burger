@@ -8,8 +8,7 @@ import { Inputs, Paths } from "../../utils/constants";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TResetPasswordForm } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
-import { finishResetPassword } from "../../utils/api";
-import { setIsWaitingReset } from "../../store/actions/UserActions";
+import { forgotPassword } from "../../utils/api";
 import { logErrorDescription } from "../../utils/utils";
 
 export const ResetPasswordPage: FC = () => {
@@ -34,10 +33,9 @@ export const ResetPasswordPage: FC = () => {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    finishResetPassword(formValue.password, formValue.token)
+    forgotPassword(formValue.password, formValue.token)
       .then(() => {
         navigate("/login");
-        dispatch(setIsWaitingReset(false));
       })
       .catch((error) => logErrorDescription(error));
   }

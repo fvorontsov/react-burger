@@ -9,13 +9,13 @@ import {
 } from "../actions/BurgerIngredientActions";
 import { TCountedIngredient } from "../../types";
 
-export interface IBurgerIngredientsState {
+export type TBurgerIngredientsState = {
   ingredients: TCountedIngredient[];
   loading: boolean;
   error: string;
-}
+};
 
-const initialState: IBurgerIngredientsState = {
+const initialState: TBurgerIngredientsState = {
   ingredients: [],
   loading: false,
   error: "",

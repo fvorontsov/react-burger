@@ -36,12 +36,12 @@ export const OrderInfo: FC<TOrderInfo> = ({ modal = false }) => {
           if (order) {
             setOrder(order);
           } else {
-            console.log("No order in response from server");
+            console.log("Empty order received");
           }
         })
         .catch((error) => logErrorDescription(error));
     } else {
-      console.log("No order number to show details");
+      console.log("Emty number to show");
     }
   }, [id]);
 

@@ -1,24 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../../types/user";
+import { TUser } from "../../types/user";
 import {
   clear,
   setIsAuthChecked,
-  setIsWaitingReset,
   setUser,
   userLogin,
   userRegister,
 } from "../actions/UserActions";
 
-interface IUserState {
-  user: IUser | null;
+type TUserState = {
+  user: TUser | null;
   isAuthChecked: boolean;
-  isWaitingReset: boolean;
-}
+};
 
-const initialState: IUserState = {
+const initialState: TUserState = {
   user: null,
-  isAuthChecked: false,
-  isWaitingReset: false,
+  isAuthChecked: false
 };
 
 export const userSlice = createSlice({
@@ -42,12 +39,8 @@ export const userSlice = createSlice({
       .addCase(setIsAuthChecked, (state, action) => {
         state.isAuthChecked = action.payload;
       })
-      .addCase(setIsWaitingReset, (state, action) => {
-        state.isWaitingReset = action.payload;
-      })
       .addCase(clear, (state) => {
         state.user = null;
-        state.isWaitingReset = false;
       });
   },
 });

@@ -9,7 +9,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TForgotPasswordForm } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
 import { resetPassword } from "../../utils/api";
-import { setIsWaitingReset } from "../../store/actions/UserActions";
 import { logErrorDescription } from "../../utils/utils";
 
 export const ForgotPasswordPage: FC = () => {
@@ -34,7 +33,6 @@ export const ForgotPasswordPage: FC = () => {
     event.preventDefault();
     resetPassword(formValue.email)
       .then(() => {
-        dispatch(setIsWaitingReset(true));
         navigate("/reset-password");
       })
       .catch((error) => logErrorDescription(error));

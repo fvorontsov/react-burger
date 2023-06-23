@@ -7,15 +7,15 @@ import {
 } from "../actions/OrdersActions";
 import { TOrder } from "../../types/order";
 
-interface IOrdersState {
+type TOrdersState = {
   isOpen: boolean;
   orders: Array<TOrder>;
   total: number;
   totalToday: number;
   error: string | null;
-}
+};
 
-const initialState: IOrdersState = {
+const initialState: TOrdersState = {
   isOpen: false,
   orders: [],
   total: 0,
@@ -23,7 +23,7 @@ const initialState: IOrdersState = {
   error: null,
 };
 
-export const ordersSlice=  createSlice({
+export const ordersSlice = createSlice({
   name: "orders",
   initialState,
   reducers: {},
@@ -57,4 +57,4 @@ export const ordersSlice=  createSlice({
   },
 });
 
-export default ordersSlice.reducer
+export default ordersSlice.reducer;

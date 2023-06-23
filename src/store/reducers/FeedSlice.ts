@@ -8,7 +8,7 @@ import {
   feedOnWSOpen,
 } from "../actions/FeedActions";
 
-interface IFeedState {
+type TFeedState = {
   isOpen: boolean;
   orders: Array<TOrder>;
   total: number;
@@ -16,7 +16,7 @@ interface IFeedState {
   error: string | null;
 }
 
-const initialState: IFeedState = {
+const initialState: TFeedState = {
   isOpen: false,
   orders: [],
   total: 0,
