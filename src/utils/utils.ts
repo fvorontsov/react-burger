@@ -96,7 +96,7 @@ export const getIngredients = (ids: string[], data: TIngredientCommon[]) => {
     ingredients.forEach((value, key, map) => {
       data.forEach((ingredient) => {
         if (ingredient._id === key) {
-          let count = 1;
+          let count = value;
           if (ingredient.type === "bun") {
             buns.add(key);
             count = 2;

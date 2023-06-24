@@ -2,17 +2,16 @@ import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientsList } from "./ingredients-list/IngredientsList";
 import React, { FC, SyntheticEvent } from "react";
-import { useDispatch } from "react-redux";
 import { IngredientType } from "../../utils/constants";
 import { TCountedIngredient } from "../../types";
 import {
   openIngredientDetailsModal,
   selectIngredient,
 } from "../../store/actions/IngredientDetailsActions";
-import { useAppSelector } from "../../store/hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ingredients = useAppSelector((s) => s.ingredientsReducer.ingredients);
 
   const [currentTab, setCurrentTab] = React.useState<string>(
