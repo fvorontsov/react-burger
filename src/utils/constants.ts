@@ -43,10 +43,6 @@ export const TokenIdentifiers: TString = {
   ACCESS: "accessToken",
 };
 
-export const Errors: TString = {
-  JWT_EXPIRED: "jwt expired",
-};
-
 export const Paths: TString = {
   REGISTER: "/register",
   LOGIN: "/login",
@@ -58,4 +54,6 @@ export const Paths: TString = {
   ORDERS: "/orders",
   INGREDIENT: "/ingredients/:id",
   INGREDIENTS: "/ingredients",
+  FEED: "/feed",
+  ORDER: "/feed/:id",
 };

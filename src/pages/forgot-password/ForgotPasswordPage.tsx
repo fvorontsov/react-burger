@@ -5,21 +5,22 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Inputs, Paths } from "../../utils/constants";
-import { Link, Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { forgotPassword } from "../../services/actions/forgot-password";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TForgotPasswordForm } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
+import { resetPassword } from "../../utils/api";
+import { logErrorDescription } from "../../utils/utils";
 
 export const ForgotPasswordPage: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
 
-  const { isAuthenticated, forgotPasswordRequestSucceed } = useSelector(
-    (state: any) => state.access
-  );
+  const isAuthenticated = useAppSelector((s) => s.userSliceReducer.user);
 
   const [formValue, setFormValue] = React.useState<TForgotPasswordForm>({
     email: "",
   });
+
+  const navigate = useNavigate();
 
   function onFormChange(event: ChangeEvent<HTMLInputElement>) {
     setFormValue({
@@ -30,12 +31,14 @@ export const ForgotPasswordPage: FC = () => {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    dispatch(forgotPassword(formValue));
+    resetPassword(formValue.email)
+      .then(() => {
+        navigate("/reset-password");
+      })
+      .catch((error) => logErrorDescription(error));
   }
 
-  if (forgotPasswordRequestSucceed) {
-    return <Navigate to={Paths.RESET_PASSWORD} />;
-  } else if (isAuthenticated) {
+  if (isAuthenticated) {
     return <Navigate to={Paths.HOME} />;
   }
 

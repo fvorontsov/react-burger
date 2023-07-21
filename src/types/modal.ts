@@ -1,7 +1,7 @@
-import {ReactNode} from "react";
+import { ReactNode } from "react";
 
 export type TModalOverlay = {
-    closeModal: () => void;
+  closeModal: () => void;
 };
 
 export type TModal = TModalOverlay & {

@@ -1,13 +1,6 @@
 import React, { FC } from "react";
 import "../../App.css";
 import { AppHeader } from "../app-header/AppHeader";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions/burger-ingredients";
-import {
-  CLOSE_INGREDIENT_DETAILS_MODAL,
-  DESELECT_INGREDIENT,
-} from "../../services/actions/ingredient-details";
-import { CLOSE_ORDER_DETAILS_MODAL } from "../../services/actions/order-details";
 import { Modal } from "../modal/Modal";
 import { IngredientDetails } from "../burger-ingredients/ingredient-details/IngredientDetails";
 import { OrderDetails } from "../burger-constructor/order-details/OrderDetails";
@@ -20,52 +13,75 @@ import { ForgotPasswordPage } from "../../pages/forgot-password/ForgotPasswordPa
 import { ResetPasswordPage } from "../../pages/reset-password/ResetPasswordPage";
 import { ProfilePage } from "../../pages/profile/ProfilePage";
 import { ProfileEditor } from "../profile/editor/ProfiltEditor";
-import { ProfileOrders } from "../profile/orders/ProfileOrders";
-import { Paths } from "../../utils/constants";
-import { getUser } from "../../services/actions/profile";
+import {Paths, TokenIdentifiers} from "../../utils/constants";
 import { NotFoundPage } from "../../pages/not-found/NotFoundPage";
 import { ProtectedRoute } from "../protected-route/ProtectedRoute";
+import { FeedPage } from "../../pages/feed/feed";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
+import { loadIngredients } from "../../store/actions/BurgerIngredientActions";
+import { getUserProfile } from "../../utils/api";
+import { setIsAuthChecked, setUser } from "../../store/actions/UserActions";
+import { logErrorDescription } from "../../utils/utils";
+import { closeOrderDetailsModal } from "../../store/actions/OrderDetailsActions";
+import { OrderInfo } from "../order-info/OrderInfo";
+import { ProfileOrdersPage } from "../../pages/profile-orders/ProfileOrdersPage";
 
 export const App: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
 
-  const orderDetailsModal = useSelector(
-    (state: any) => state.orderDetails.modalIsOpen
+  const orderDetailsModal = useAppSelector(
+    (s) => s.orderDetailsReducer.modalIsOpen
   );
 
   const navigate = useNavigate();
   const location = useLocation();
-  const fromCard = location.state?.fromCard;
+  const ingredientModal = location.state?.ingredientCard;
+  const orderInfoModal = location.state?.orderCard;
 
   function closeIngredientDetailsModal() {
-    dispatch({ type: CLOSE_INGREDIENT_DETAILS_MODAL });
-    dispatch({ type: DESELECT_INGREDIENT });
     navigate(Paths.HOME, {
       replace: true,
       state: {
         ...(location.state || {}),
-        fromCard: false,
+        ingredientCard: false,
       },
     });
   }
 
-  function closeOrderDetailsModal() {
-    dispatch({ type: CLOSE_ORDER_DETAILS_MODAL });
+  function closeOrderInfoModal() {
+    navigate(-1);
+  }
+
+  function closeOrderModal() {
+    dispatch(closeOrderDetailsModal());
   }
 
   React.useEffect(() => {
-    dispatch(getIngredients());
-    dispatch(getUser(true));
+    dispatch(loadIngredients());
+    if (localStorage.getItem("accessToken")) {
+      getUserProfile()
+        .then((user) => dispatch(setUser(user)))
+        .catch((error) => {
+          localStorage.removeItem(TokenIdentifiers.ACCESS);
+          localStorage.removeItem(TokenIdentifiers.REFRESH);
+          logErrorDescription(error);
+          dispatch(setIsAuthChecked(true));
+        });
+    } else {
+      dispatch(setIsAuthChecked(true));
+    }
   }, [dispatch]);
 
   return (
     <div>
       <AppHeader />
       <main className={styles.container}>
-        <Routes location={fromCard || location}>
+        <Routes location={ingredientModal || orderInfoModal || location}>
           <Route path={Paths.HOME} element={<HomePage />} />
           <Route path={Paths.LOGIN} element={<LoginPage />} />
           <Route path={Paths.REGISTER} element={<RegistrationPage />} />
+          <Route path={Paths.FEED} element={<FeedPage />} />
+          <Route path={Paths.FEED + "/:id"} element={<OrderInfo />} />
           <Route
             path={Paths.FORGOT_PASSWORD}
             element={<ForgotPasswordPage />}
@@ -82,15 +98,17 @@ export const App: FC = () => {
             <Route path={Paths.PROFILE} element={<ProfileEditor />}></Route>
             <Route
               path={Paths.PROFILE + Paths.ORDERS}
-              element={<ProfileOrders />}
+              element={<ProfileOrdersPage />}
             />
           </Route>
+          <Route path="/profile/orders/:id" element={<OrderInfo />} />
+
           <Route path="/:ingredients/:id" element={<IngredientDetails />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
 
-      {fromCard && (
+      {ingredientModal && (
         <Routes>
           <Route
             path="/:ingredients/:id"
@@ -107,9 +125,30 @@ export const App: FC = () => {
       )}
 
       {orderDetailsModal && (
-        <Modal closeModal={closeOrderDetailsModal}>
+        <Modal closeModal={closeOrderModal}>
           <OrderDetails />
         </Modal>
+      )}
+
+      {orderInfoModal && (
+        <Routes>
+          <Route
+            path="/:feed/:id"
+            element={
+              <Modal closeModal={closeOrderInfoModal}>
+                <OrderInfo modal={true} />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <Modal closeModal={closeOrderInfoModal}>
+                <OrderInfo modal={true} />
+              </Modal>
+            }
+          />
+        </Routes>
       )}
     </div>
   );

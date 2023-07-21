@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  position: relative;
+  background: linear-gradient(45deg, rgba(128, 26, 178, 1), rgba(74, 76, 255, 1));
+  border-radius: 100px;
+  z-index: -1;
+  overflow: hidden;
+  margin-right: -16px;
+}
+
+.container::after {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  left: 2px;
+  bottom: 2px;
+  border-radius: 100px;
+  background: var(--background);
+  content: '';
+}
+
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  left: 2px;
+  bottom: 2px;
+  border-radius: 100px;
+  background: rgba(28, 28, 33, .6);
+  z-index: 2;
+}
+
+.image {
+  height: 56px;
+  z-index: 1;
+}

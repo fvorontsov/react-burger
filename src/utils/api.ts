@@ -1,144 +1,168 @@
-import { urls } from "./urls";
+import { Method } from "axios";
+import { TLoginData, TUser, TUserWithPassword } from "../types/user";
+import { TCountedIngredient } from "../types";
+import { TOrder } from "../types/order";
 import { TokenIdentifiers } from "./constants";
+import { req } from "../api/instances";
 import {
-  TConstructorIngredient,
-  TForgotPasswordForm,
-  TLoginForm,
-  TProfileEditorForm,
-  TRegistrationForm,
-  TResetPasswordForm,
-} from "../types";
+  TIngredientsResponse,
+  TMakeOrderResponse,
+  TOrdersResponse,
+  TResponse,
+  TTokensResponse,
+  TUserResponse,
+} from "../api/responses";
+import { urls } from "./urls";
+import { APIError } from "../api/errors";
 
-export const fetchIngredients = () => {
-  return fetch(`${urls.base}/${urls.general.ingredients}`, {
-    method: "GET",
-  }).then(responseOrError);
+const request = async <T extends TResponse>(
+  method: Method,
+  url: string,
+  data?: unknown
+): Promise<T> => {
+  try {
+    const axiosResponse = await req.request<T>({ method, url, data });
+    const response = axiosResponse.data;
+    return response.success
+      ? response
+      : Promise.reject(new APIError(response.message));
+  } catch (error) {
+    console.log(error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return Promise.reject(new APIError(message));
+  }
 };
 
-export const makeOrder = ({
-  ingredients,
-}: {
-  ingredients: TConstructorIngredient[];
-}) => {
-  return fetch(`${urls.base}/${urls.general.orders}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: getAccessToken(),
-    },
-    body: JSON.stringify({ ingredients: ingredients }),
-  }).then(responseOrError);
+function saveTokens(accessToken: string, refreshToken: string): void {
+  localStorage.setItem(TokenIdentifiers.ACCESS, accessToken);
+  localStorage.setItem(TokenIdentifiers.REFRESH, refreshToken);
+}
+
+export const get = async <T extends TResponse>(url: string): Promise<T> => {
+  return request<T>("GET", url);
 };
 
-export const login = ({ email, password }: TLoginForm) => {
-  return fetch(`${urls.base}/${urls.auth.login}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  }).then(responseOrError);
+export const post = async <T extends TResponse>(
+  url: string,
+  data?: unknown
+): Promise<T> => {
+  return request<T>("POST", url, data);
 };
 
-export const register = ({ name, email, password }: TRegistrationForm) => {
-  return fetch(`${urls.base}/${urls.auth.register}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ name, email, password }),
-  }).then(responseOrError);
+export const register = async (user: TUserWithPassword): Promise<TUser> => {
+  const response = await post<TTokensResponse>(urls.auth.register, user);
+  saveTokens(response.accessToken, response.refreshToken);
+  return response.user;
 };
 
-export const forgotPassword = ({ email }: TForgotPasswordForm) => {
-  return fetch(`${urls.base}/${urls.passWordReset.forgot}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email }),
-  }).then(responseOrError);
+export const login = async (user: TLoginData): Promise<TUser> => {
+  const response = await post<TTokensResponse>(urls.auth.login, user);
+  saveTokens(response.accessToken, response.refreshToken);
+  return response.user;
 };
 
-export const resetPassword = ({ token, password }: TResetPasswordForm) => {
-  return fetch(`${urls.base}/${urls.passWordReset.reset}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ token, password }),
-  }).then(responseOrError);
+export const logout = async (): Promise<TResponse> => {
+  const token = localStorage.getItem(TokenIdentifiers.REFRESH);
+  return token
+    ? post<TResponse>(urls.auth.logout, { token }).then((response) => {
+        localStorage.removeItem(TokenIdentifiers.ACCESS);
+        localStorage.removeItem(TokenIdentifiers.REFRESH);
+        return response;
+      })
+    : Promise.reject(new APIError("No refresh token"));
 };
 
-export const getUser = () => {
-  return fetch(`${urls.base}/${urls.auth.user}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: getAccessToken(),
-    },
-  }).then(responseOrError);
+export const resetPassword = async (email: string): Promise<TResponse> => {
+  const response = await post<TResponse>(urls.passWordReset.forgot, { email });
+  return response.success
+    ? Promise.resolve(response)
+    : Promise.reject(response.message || "Can't reset password");
 };
 
-export const updateUser = ({ name, email, password }: TProfileEditorForm) => {
-  return fetch(`${urls.base}/${urls.auth.user}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: getAccessToken(),
-    },
-    body: JSON.stringify({ name, email, password }),
-  }).then(responseOrError);
+export const forgotPassword = async (
+  password: string,
+  token: string
+): Promise<TResponse> => {
+  const response = await post<TResponse>(urls.passWordReset.reset, {
+    password,
+    token,
+  });
+  return response.success
+    ? Promise.resolve(response)
+    : Promise.reject(response.message || "Can't reset password");
 };
 
-export const refreshToken = () => {
-  return fetch(`${urls.base}/${urls.auth.token}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      token: getRefreshToken(),
-    }),
-  }).then(responseOrError);
+const refreshToken = async (): Promise<TTokensResponse> => {
+  const token = localStorage.getItem(TokenIdentifiers.REFRESH);
+  return token
+    ? post<TTokensResponse>(urls.auth.token, { token })
+    : Promise.reject(new APIError("There is no refresh token"));
 };
 
-export const logout = () => {
-  return fetch(`${urls.base}/${urls.auth.logout}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      token: getRefreshToken(),
-    }),
-  }).then(responseOrError);
-};
-
-const getAccessToken = (): string => {
-  const item = localStorage.getItem(TokenIdentifiers.ACCESS);
-  if (item == null) {
-    return "";
+export const requestWithAuth = async <T extends TResponse>(
+  method: Method,
+  url: string,
+  requestData?: object,
+  attempts = 0
+): Promise<T> => {
+  if (attempts >= 2) {
+    return Promise.reject(new APIError("Can't fetch data"));
   }
 
-  return item;
+  try {
+    return await request<T>(method, url, requestData);
+  } catch (error) {
+    if (error instanceof APIError && error.message === "jwt expired") {
+      const newTokenData = await refreshToken();
+      if (newTokenData.success) {
+        saveTokens(newTokenData.accessToken, newTokenData.refreshToken);
+        return requestWithAuth<T>(method, url, requestData, attempts + 1);
+      }
+    }
+    return Promise.reject(error);
+  }
 };
 
-const getRefreshToken = (): string => {
-  const item = localStorage.getItem(TokenIdentifiers.REFRESH);
-  if (item == null) {
-    return "";
-  }
-
-  return item;
+export const fetchIngredients = async (): Promise<
+  Array<TCountedIngredient>
+> => {
+  const response = await get<TIngredientsResponse>(urls.general.ingredients);
+  return response.data;
 };
 
-const responseOrError = (res: Response) => {
-  if (res.ok) {
-    return res.json();
-  } else {
-    return res.json().then((err) => {
-      throw err;
-    });
-  }
+export const getOrder = async (orderNumber: string): Promise<Array<TOrder>> => {
+  const response = await get<TOrdersResponse>(
+    `${urls.general.orders}/${orderNumber}`
+  );
+  return response.orders;
+};
+
+export const getUserProfile = async (): Promise<TUser> => {
+  const response = await requestWithAuth<TUserResponse>("GET", urls.auth.user);
+  return response.success
+    ? Promise.resolve(response.user)
+    : Promise.reject(new APIError(response.message));
+};
+
+export const updateUserProfile = async (profile: TUser): Promise<TUser> => {
+  const response = await requestWithAuth<TUserResponse>(
+    "PATCH",
+    urls.auth.user,
+    profile
+  );
+  return response.success
+    ? Promise.resolve(response.user)
+    : Promise.reject(new APIError(response.message));
+};
+export const makeOrder = async (
+  ingredients: Array<string>
+): Promise<string> => {
+  const response = await requestWithAuth<TMakeOrderResponse>(
+    "POST",
+    urls.general.orders,
+    { ingredients }
+  );
+  return response.success
+    ? Promise.resolve(response.order.number)
+    : Promise.reject(new APIError(response.message));
 };

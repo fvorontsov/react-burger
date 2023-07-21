@@ -1,14 +1,15 @@
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { TProtectedRoute } from "../../types";
+import { useAppSelector } from "../../store/hooks/redux";
 
 export const ProtectedRoute: FC<TProtectedRoute> = ({ children }) => {
-  const { isAuthenticated } = useSelector((state: any) => state.access);
+  const isAuthChecked = useAppSelector((s) => s.userSliceReducer.isAuthChecked);
+  const user = useAppSelector((s) => s.userSliceReducer.user);
 
   const location = useLocation();
 
-  if (!isAuthenticated) {
+  if (!isAuthChecked || !user) {
     return (
       <Navigate
         to="/login"

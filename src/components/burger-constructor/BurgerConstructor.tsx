@@ -6,16 +6,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ConstructorList } from "./constructor-list/ConstructorList";
 import React, { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  ADD_INGREDIENT,
-  SELECT_BUN,
-} from "../../services/actions/burger-constructor";
-import {
-  INCREASE_INGREDIENT_QUANTITY,
-  SELECT_BUNS,
-} from "../../services/actions/burger-ingredients";
-import { placeOrder } from "../../services/actions/order-details";
 import { useDrop } from "react-dnd";
 import {
   BunType,
@@ -25,66 +15,57 @@ import {
 } from "../../utils/constants";
 import { EmptyConstructorCard } from "./constructor-list/empty-constructor-card/EmptyConstructorCard";
 import { useNavigate } from "react-router-dom";
-import { TCountedIngredient } from "../../types";
+import { TConstructorIngredient } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/redux";
+import {
+  increaseQuantity,
+  selectBuns,
+} from "../../store/actions/BurgerIngredientActions";
+import {
+  addIngredient,
+  selectBun,
+} from "../../store/actions/BurgerConstructorActions";
+import { placeOrder } from "../../store/actions/OrderDetailsActions";
 
 export const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useAppDispatch();
 
-  const ingredients = useSelector(
-    (state: any) => state.burgerConstructor.ingredients
+  const ingredients = useAppSelector((s) => s.constructorReducer.ingredients);
+
+  const makeOrderRequestInProgress = useAppSelector(
+    (s) => s.orderDetailsReducer.makeOrderRequestInProgress
   );
 
-  const makeOrderRequestInProgress = useSelector(
-    (state: any) => state.orderDetails.makeOrderRequestInProgress
-  );
-
-  const { isAuthenticated } = useSelector((state: any) => state.access);
+  const isAuthenticated = useAppSelector((s) => s.userSliceReducer.user);
 
   const navigate = useNavigate();
-  const { bun } = useSelector((state: any) => state.burgerConstructor);
+  const bun = useAppSelector((s) => s.constructorReducer.bun);
 
   const totalCost = React.useMemo(() => {
-    return (
-      ingredients.reduce((acc: number, cur: TCountedIngredient) => {
-        if (cur.price) {
-          return acc + cur.price;
-        }
-        return acc;
-      }, 0) + (bun ? 2 * bun.price : 0)
-    );
+    let total = bun ? bun.price * 2 : 0;
+    total += ingredients.reduce((prev, item) => prev + item.price, 0);
+    return total;
   }, [ingredients, bun]);
 
   const [, dropTargetRef] = useDrop({
     accept: ItemTypes.INGREDIENT_CARD,
-    drop(ingredient: TCountedIngredient) {
+    drop(ingredient: TConstructorIngredient) {
       handleDrop(ingredient);
     },
   });
 
-  function handleDrop(ingredient: TCountedIngredient) {
+  function handleDrop(ingredient: TConstructorIngredient) {
     const { _id, type } = ingredient;
 
     switch (type) {
       case IngredientType.BUN: {
-        dispatch({
-          type: SELECT_BUNS,
-          _id: _id,
-        });
-        dispatch({
-          type: SELECT_BUN,
-          bun: ingredient,
-        });
+        dispatch(selectBuns(_id));
+        dispatch(selectBun(ingredient));
         break;
       }
       default: {
-        dispatch({
-          type: INCREASE_INGREDIENT_QUANTITY,
-          _id: _id,
-        });
-        dispatch({
-          type: ADD_INGREDIENT,
-          ingredient,
-        });
+        dispatch(increaseQuantity(_id));
+        dispatch(addIngredient(ingredient));
         break;
       }
     }
@@ -92,12 +73,14 @@ export const BurgerConstructor: FC = () => {
 
   function handlePlaceOrder() {
     if (isAuthenticated) {
-      const orderIngredientIds = [
-        bun._id,
-        ...ingredients.map((ingredient: TCountedIngredient) => ingredient._id),
-        bun._id,
-      ];
-      dispatch(placeOrder(orderIngredientIds, true));
+      if (bun) {
+        const orderIngredientIds = [
+          bun._id,
+          ...ingredients.map((item) => item._id),
+          bun._id,
+        ];
+        dispatch(placeOrder({ ingredients: orderIngredientIds }));
+      }
     } else {
       navigate(Paths.LOGIN, {
         replace: true,
