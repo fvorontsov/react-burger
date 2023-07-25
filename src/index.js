@@ -13,9 +13,9 @@ const store = setupStore();
 
 root.render(
   <Provider store={store}>
-    <HashRouter>
+    <BrowserRouter>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </Provider>
 );
 reportWebVitals();

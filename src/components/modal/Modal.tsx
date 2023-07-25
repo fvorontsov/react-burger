@@ -22,7 +22,7 @@ export const Modal: FC<TModal> = ({ children, title, closeModal }) => {
   }, [closeModal, handleKeydown]);
 
   return ReactDOM.createPortal(
-    <div className={`${styles.modal}`}>
+    <div data-testid="modal" className={`${styles.modal}`}>
       <div className={styles.header}>
         {title && (
           <div className={`${styles.title} pt-10 ml-10 mr-10`}>
@@ -32,6 +32,7 @@ export const Modal: FC<TModal> = ({ children, title, closeModal }) => {
         {children}
       </div>
       <button
+        data-testid="close-modal"
         className={`${styles.btn} mr-10 mt-15`}
         type="button"
         onClick={closeModal}

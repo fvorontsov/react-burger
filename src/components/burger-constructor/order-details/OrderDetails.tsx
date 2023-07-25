@@ -8,7 +8,7 @@ export const OrderDetails: FC = () => {
 
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
-      <p className="text text_type_digits-large">{orderId}</p>
+      <p data-testid="orderNumber" className="text text_type_digits-large">{orderId}</p>
       <p className="text text_type_main-medium mt-8 mb-15">
         Идентификатор заказа
       </p>

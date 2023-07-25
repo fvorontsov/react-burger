@@ -89,7 +89,11 @@ export const BurgerConstructor: FC = () => {
   }
 
   return (
-    <section className={`${styles.constructor} mt-25`} ref={dropTargetRef}>
+    <section
+      data-testid="burgerConstructor"
+      className={`${styles.constructor} mt-25`}
+      ref={dropTargetRef}
+    >
       <div className={styles.list}>
         <div className="ml-8">
           {bun && (
@@ -123,6 +127,7 @@ export const BurgerConstructor: FC = () => {
           <CurrencyIcon type="primary" />
         </span>
         <Button
+          data-testid="orderButton"
           htmlType="button"
           type="primary"
           size="large"

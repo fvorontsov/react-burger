@@ -79,6 +79,7 @@ export const ConstructorCard: FC<TConstructorCard> = ({
     <div
       className={`${styles.item} ${isDragging && styles.item_drag}`}
       ref={ref}
+      data-testid="constructorElement"
     >
       <DragIcon type={"primary"} />
       <ConstructorElement

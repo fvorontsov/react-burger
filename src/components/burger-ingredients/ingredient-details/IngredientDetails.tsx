@@ -47,8 +47,8 @@ export const IngredientDetails: FC = () => {
     <figure className={styles.container}>
       <img className={styles.image} src={image} alt={name} />
       <figcaption className={styles.header}>
-        <h1 className="text text_type_main-medium mt-4 mb-8">{name}</h1>
-        <ul className={styles.list}>
+        <h1 data-testid="ingredientHeader" className="text text_type_main-medium mt-4 mb-8">{name}</h1>
+        <ul data-testid="ingredientData" className={styles.list}>
           <ListItem text="Калории,ккал" />
           <ListItem text="Белки, г" />
           <ListItem text="Жиры, г" />
