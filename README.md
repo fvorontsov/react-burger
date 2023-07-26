@@ -1,1 +1,1 @@
-Link: https://github.com/fvorontsov/react-burger
+Link: https://fvorontsov.github.io/react-burger/
