@@ -1,6 +1,11 @@
 import { feedSlice } from "./FeedSlice";
 import { TOrder } from "../../types/order";
-import { feedOnWSMessage } from "../actions/FeedActions";
+import {
+  feedOnWSClose,
+  feedOnWSError,
+  feedOnWSMessage,
+  feedOnWSOpen,
+} from "../actions/FeedActions";
 
 describe("Feed reducers", () => {
   const reducer = feedSlice.reducer;
@@ -13,8 +18,46 @@ describe("Feed reducers", () => {
       error: null,
     });
   });
+
+  it("should open", function () {
+    expect(reducer(undefined, feedOnWSOpen)).toEqual({
+      isOpen: true,
+      orders: [],
+      total: 0,
+      totalToday: 0,
+      error: null,
+    });
+  });
+
+  it("should parse error", function () {
+    expect(reducer(undefined, feedOnWSError("error message"))).toEqual({
+      isOpen: false,
+      orders: [],
+      total: 0,
+      totalToday: 0,
+      error: "error message",
+    });
+  });
+
+  it("should close", function () {
+    const testState = {
+      isOpen: true,
+      orders: [],
+      total: 0,
+      totalToday: 0,
+      error: null,
+    };
+    expect(reducer(testState, feedOnWSClose())).toEqual({
+      isOpen: false,
+      orders: [],
+      total: 0,
+      totalToday: 0,
+      error: null,
+    });
+  });
+
   it("should update state", () => {
-    const testOrderA: TOrder = {
+    const order1: TOrder = {
       _id: "a",
       name: "test",
       status: "done",
@@ -23,7 +66,7 @@ describe("Feed reducers", () => {
       updatedAt: "456",
       ingredients: ["a", "b", "c"],
     };
-    const testOrderB: TOrder = {
+    const order2: TOrder = {
       _id: "a",
       name: "test",
       status: "done",
@@ -36,7 +79,7 @@ describe("Feed reducers", () => {
       reducer(
         undefined,
         feedOnWSMessage({
-          orders: [testOrderA, testOrderB],
+          orders: [order1, order2],
           total: 42,
           totalToday: 24,
         })
@@ -44,7 +87,7 @@ describe("Feed reducers", () => {
     ).toEqual({
       isOpen: false,
       error: null,
-      orders: [testOrderA, testOrderB],
+      orders: [order1, order2],
       total: 42,
       totalToday: 24,
     });
