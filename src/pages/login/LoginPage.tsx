@@ -44,6 +44,7 @@ export const LoginPage: FC = () => {
       <form className={styles.form} onSubmit={onSubmit}>
         <div className="mb-6">
           <Input
+            data-testid="email-input"
             type={Inputs.Types.EMAIL}
             placeholder={Inputs.Placeholders.EMAIL}
             name={Inputs.Names.EMAIL}

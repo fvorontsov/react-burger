@@ -8,10 +8,12 @@ export const req = axios.create({
   responseType: "json",
 });
 
-req.interceptors.request.use((config) => {
-  const token = localStorage.getItem(TokenIdentifiers.ACCESS);
-  if (token) {
-    config.headers.Authorization = token;
-  }
-  return config;
-});
+if (req) {
+  req.interceptors.request.use((config) => {
+    const token = localStorage.getItem(TokenIdentifiers.ACCESS);
+    if (token) {
+      config.headers.Authorization = token;
+    }
+    return config;
+  });
+}
